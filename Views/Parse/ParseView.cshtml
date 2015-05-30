@@ -1,0 +1,41 @@
+﻿@model HL7Parser.Models.HL7Message
+
+@{
+    ViewBag.Title = "ParseView";
+}
+
+<h2>ParseView</h2>
+<body>
+    This is the ParseView
+    <p>@Html.DisplayNameFor(model => model.MessageData)</p>
+    <p>@Html.DisplayNameFor(model => model.ParsedData)</p>
+    <p>@Model.MessageData</p>
+    <p>@Model.ParsedData.Message.Version</p>
+</body>
+
+<h2>Parsed Message</h2>
+
+<div>
+    <h4>HL7Message</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MessageData)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MessageData)
+        </dd>
+    </dl>
+    <h4>@Html.DisplayNameFor(model => model.ParsedData)</h4>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ParsedData) - @Model.ParsedData.GetAll("MSH");
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MessageData)
+        </dd>
+    </dl>
+</div>
+

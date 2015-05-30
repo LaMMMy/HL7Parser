@@ -1,0 +1,44 @@
+﻿@model HL7Parser.Models.HL7Message
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>HL7Message</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.MessageData, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MessageData, new
+           {
+               htmlAttributes = new
+               {
+                   @class = "form-control",
+                   @Value = @"MSH|^~\&||GA0000||MA0000|199705221605||VXQ^V01|19970522GA40|T|2.3.1|||AL
+QRD|199705221605|R|I|19970522GA05|||25^RD|^KENNEDY^JOHN^FITZGERALD^JR|VXI^VACCINE INFORMATION^HL70048|^SIIS
+QRF|MA0000||||256946789~19900607~MA~MA99999999~88888888~KENNEDY^JACQUELINE^LEE~BOUVIER~898666725~KENNEDY^JOHN^FITZGERALD~822546618"
+               }
+           })
+                @Html.ValidationMessageFor(model => model.MessageData, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
