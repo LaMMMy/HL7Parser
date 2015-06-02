@@ -14,11 +14,27 @@
 */
 .dl-horizontal dt {
     white-space: normal;
+    width: 260px;
 }
+.dl-horizontal dd {
+    margin-left: 270px;
+  }
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 900px;
+}
+
+textarea {
+    max-width: 900px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
+
+.hl7display {
+    overflow: scroll;
+    white-space: pre;
 }

@@ -403,6 +403,14 @@
             <param name="refreshToken">Goolge OAuth 2.0 refresh token</param>
             <param name="expires">Seconds until expiration</param>
         </member>
+        <member name="M:Microsoft.Owin.Security.Google.GoogleOAuth2AuthenticatedContext.#ctor(Microsoft.Owin.IOwinContext,Newtonsoft.Json.Linq.JObject,Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Initializes a <see cref="T:Microsoft.Owin.Security.Google.GoogleOAuth2AuthenticatedContext"/>
+            </summary>
+            <param name="context">The OWIN environment</param>
+            <param name="user">The JSON-serialized Google user info</param>
+            <param name="tokenResponse">The JSON-serialized token response Google</param>
+        </member>
         <member name="P:Microsoft.Owin.Security.Google.GoogleOAuth2AuthenticatedContext.User">
             <summary>
             Gets the JSON-serialized user
@@ -462,6 +470,11 @@
         <member name="P:Microsoft.Owin.Security.Google.GoogleOAuth2AuthenticatedContext.Identity">
             <summary>
             Gets the <see cref="T:System.Security.Claims.ClaimsIdentity"/> representing the user
+            </summary>
+        </member>
+        <member name="P:Microsoft.Owin.Security.Google.GoogleOAuth2AuthenticatedContext.TokenResponse">
+            <summary>
+            Token response from Google
             </summary>
         </member>
         <member name="P:Microsoft.Owin.Security.Google.GoogleOAuth2AuthenticatedContext.Properties">
