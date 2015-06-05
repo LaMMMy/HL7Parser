@@ -5,6 +5,13 @@ using System.Collections.Generic;
 
 namespace HL7Parser.Models
 {
+    public class ParsedMessageViewModel
+    {
+        public string OriginalMessage { get; set; }
+        public List<FieldGroup> MessageTree { get; set; }
+        public string TransformedXML { get; set; }
+    }
+
     public class ParsedORUViewModel
     {
         public ORU_R01 ORUMessage { get; set; }
@@ -14,5 +21,7 @@ namespace HL7Parser.Models
         public List<ORU_R01_ORDER_OBSERVATION> OBR { get; set; }
         public ORC ORC { get; set; }
         public List<ORU_R01_OBSERVATION> OBX { get; set; }
+        public List<FieldGroup> MessageTree { get; set; }
+        public string TransformedXML { get; set; }
     }
 }

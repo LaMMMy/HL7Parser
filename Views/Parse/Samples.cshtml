@@ -1,29 +1,18 @@
-﻿@model HL7Parser.Models.HL7Message
-
+﻿
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Samples";
 }
 
-<h2>Create</h2>
+<div class="jumbotron">
+    <h1>HL7 Samples</h1>
+    <p class="lead">Grab some samples from below.</p>
+</div>
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>HL7Message</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessageData, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.MessageData, 30, 255, new
-           {
-               htmlAttributes = new
-               {
-                   @class = "form-control",
-                   @wrap = "off",
-                   @text = @"MSH|^~\&|LAB|MYFAC|LAB||201411130917||ORU^R01|3216598|D|2.3|||AL|NE|
+<div class="row">
+    <div class="col-md-4 fullwidth">
+        <h2>Lab Sample</h2>
+        <p class="hl7Sample">
+MSH|^~\&|LAB|MYFAC|LAB||201411130917||ORU^R01|3216598|D|2.3|||AL|NE|
 PID|1|ABC123DF|AND234DA_PID3|PID_4_ALTID|Patlast^Patfirst^Mid||19670202|F|||4505 21 st^^LAKE COUNTRY^BC^V4V 2S7||222-555-8484|||||MF0050356/15|
 PV1|1|O|MYFACSOMPL||||^Xavarie^Sonna^^^^^XAVS|||||||||||REF||SELF|||||||||||||||||||MYFAC||REG|||201411071440||||||||23390^PV1_52Surname^PV1_52Given^H^^Dr^^PV1_52Mnemonic|
 ORC|RE|PT103933301.0100|||CM|N|||201411130917|^Kyle^Andra^J.^^^^KYLA||^Xavarie^Sonna^^^^^XAVS|MYFAC|
@@ -43,21 +32,8 @@ OBX|12|NM|301.2500^Monocytes^00065227^742-7^Monocytes^pCLOCD|1|1.0|10\S\9/L|0.1-
 OBX|13|NM|301.2700^Eosinophils^00065227^711-2^Eosinophils^pCLOCD|1|0.0|10\S\9/L|0.0-0.5|N||A~S|F|||201411130916|MYFAC^MyFake Hospital^L|
 OBX|14|NM|301.2900^Basophils^00065227^704-7^Basophils^pCLOCD|1|0.0|10\S\9/L|0.0-0.2|N||A~S|F|||201411130916|MYFAC^MyFake Hospital^L|
 ZDR||^Xavarie^Sonna^^^^^XAVS^^^^^XX^^ATP|
-ZPR||"
-               }
-           })
-                @Html.ValidationMessageFor(model => model.MessageData, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
+ZPR||
+        </p>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>

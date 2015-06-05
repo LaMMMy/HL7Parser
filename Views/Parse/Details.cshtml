@@ -1,26 +1,157 @@
-﻿@model HL7Parser.Models.HL7Message
+﻿@using HL7Parser.Helpers
+@*@model List<HL7Parser.Models.FieldGroup>*@
+@model HL7Parser.Models.ParsedORUViewModel
+
+@Styles.Render("~/Content/treeviewcss")
 
 @{
     ViewBag.Title = "Parsed Message";
 }
 
-<h2>Details</h2>
 
 <div>
-    <h4>HL7Message</h4>
+    <h4>Original Message</h4>
+    <span></span>
+    <div class="panel hl7display">
+        @Model.OriginalMessage.Trim();
+    </div>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.MessageData)
-        </dt>
+    <h3>Parsed Message</h3>
+    <h4>MSH</h4>
 
+    <dl class="dl-horizontal">
+        <dt>Sending Application</dt>
+        <dd>@Model.ORUMessage.MSH.SendingApplication.NamespaceID</dd>
+        <dt>Sending Facility</dt>
+        <dd>@Model.ORUMessage.MSH.SendingFacility.NamespaceID</dd>
+        <dt>Receiving Application</dt>
+        <dd>@Model.ORUMessage.MSH.ReceivingApplication.NamespaceID</dd>
+        <dt>Receiving Facility</dt>
+        <dd>@Model.ORUMessage.MSH.ReceivingFacility.NamespaceID</dd>
+        <dt>Message Date</dt>
+        <dd>@Model.ORUMessage.MSH.DateTimeOfMessage.TimeOfAnEvent</dd>
+        <dt>Control ID</dt>
+        <dd>@Model.ORUMessage.MSH.MessageControlID</dd>
+    </dl>
+    <h4>PID</h4>
+    <dl class="dl-horizontal">
+        <dt>Patient ID External (PID.2)</dt>
+        <dd>@Model.PID.PatientIDExternalID.ID</dd>
+        <dt>Patient ID Internal (PID.3)</dt>
         <dd>
-            @Html.DisplayFor(model => model.MessageData)
+            @for (int i = 0; i < @Model.PID.PatientIDInternalIDRepetitionsUsed; i++)
+            {
+                @Model.PID.GetPatientIDInternalID(i).ID;
+            }
         </dd>
+        <dt>Alternate Patient ID (PHN - PID.4)</dt>
+        <dd>@Model.PID.AlternatePatientID.ID</dd>
+        <dt>Patient Name (PHN - PID.5)</dt>
+        <dd>@Model.PID.PatientName</dd>
+        <dt>Date of Birth (PID.7)</dt>
+        <dd>@Model.PID.DateOfBirth.TimeOfAnEvent</dd>
+        <dt>Sex (PID.8)</dt>
+        <dd>@Model.PID.Sex</dd>
+        <dt>Race (PID.10)</dt>
+        <dd>@Model.PID.Race.Value</dd>
+        <dt>Patient Address (PID.11)</dt>
+        <dd>
+            @for (int j = 0; j < @Model.PID.PatientAddressRepetitionsUsed; j++)
+            {
+                var address = @Model.PID.GetPatientAddress(j);
+                WriteLiteral(@Html.Encode(address.StreetAddress + " " + address.City + " " + address.StateOrProvince + " " + address.ZipOrPostalCode));
+            }
+        </dd>
+        <dt>Phone Number - Home (PID.13)</dt>
+        <dd>@Model.PID.GetPhoneNumberHome(0)</dd>
+        <dt>Primary Language (PID.15)</dt>
+        <dd>@Model.PID.PrimaryLanguage.Identifier</dd>
+        <dt>Marital Status (PID.16)</dt>
+        <dd>@Model.PID.GetMaritalStatus(0).Value</dd>
+        <dt>Religion (PID.17)</dt>
+        <dd>@Model.PID.Religion.Value</dd>
+        <dt>Account Number (PID.18)</dt>
+        <dd>@Model.PID.PatientAccountNumber</dd>
+        <dt>SSN Number (PID.19)</dt>
+        <dd>@Model.PID.SSNNumberPatient</dd>
+    </dl>
+    <h4>PV1</h4>
+    <dl class="dl-horizontal">
+        <dt>@Model.PV1.PV1.PatientClass.Description (PV1.2)</dt>
+        <dd>
+            @Model.PV1.PV1.PatientClass.Value
+        </dd>
+        <dt>@Model.PV1.PV1.AssignedPatientLocation.Description (PV1.3)</dt>
+        <dd>
+            @Model.PV1.PV1.AssignedPatientLocation.PointOfCare
+        </dd>
+        <dt>@Model.PV1.PV1.AdmissionType.Description (PV1.4)</dt>
+        <dd>@Model.PV1.PV1.AdmissionType</dd>
+        <dt>@Model.PV1.PV1.PreadmitNumber.Description (PV1.5)</dt>
+        <dd>@Model.PV1.PV1.PreadmitNumber.ID</dd>
+        <dt>@Model.PV1.PV1.PriorPatientLocation.Description (PV1.6)</dt>
+        <dd>@Model.PV1.PV1.PriorPatientLocation</dd>
+        <dt>@Model.PV1.PV1.AttendingDoctor.Description (PV1.7)</dt>
+        <dd>
+            @if (@Model.PV1.PV1.AttendingDoctor.SourceTable.Value != null)
+            {
+                var referer = @Model.PV1.PV1.AttendingDoctor;
+                @WriteLiteral(referer.IDNumber + " - " + referer.FamilyName + ", " + referer.GivenName + " " + referer.MiddleInitialOrName + " (" + referer.SourceTable + ")");
+            }
+        </dd>
+        <dt>
+            @Model.PV1.PV1.ReferringDoctor.Description (PV1.8)
+        </dt>
+        <dd>
+            @if (@Model.PV1.PV1.ReferringDoctor.SourceTable.Value != null)
+            {
+                var referer = @Model.PV1.PV1.ReferringDoctor;
+                @WriteLiteral(referer.IDNumber + " - " + referer.FamilyName + ", " + referer.GivenName + " " + referer.MiddleInitialOrName + " (" + referer.SourceTable + ")");
+            }
+        </dd>
+        <dt>Consulting Doctor(s) (PV1.9)</dt>
+        <dd>
+            @for (int j = 0; j < @Model.PV1.PV1.ConsultingDoctorRepetitionsUsed; j++)
+            {
+                var cons = @Model.PV1.PV1.GetConsultingDoctor(j);
+                WriteLiteral(@Html.Encode(cons.IDNumber.Value + " - " + cons.FamilyName + ", " + cons.GivenName + " " + cons.MiddleInitialOrName + " (" + cons.SourceTable + ")"));
+                WriteLiteral("<br />");
+            }
+        </dd>
+        <dt>@Model.PV1.PV1.AdmitSource.Description (PV1.14)</dt>
+        <dd>@Model.PV1.PV1.AdmitSource.Value</dd>
+        <dt>@Model.PV1.PV1.PatientType.Description (PV1.18)</dt>
+        <dd>@Model.PV1.PV1.PatientType.Value</dd>
+        <dt>@Model.PV1.PV1.GetFinancialClass(0).Description (PV1.20)</dt>
+        <dd>@Model.PV1.PV1.GetFinancialClass(0).FinancialClass.Value</dd>
+        <dt>@Model.PV1.PV1.ServicingFacility.Description (PV1.39)</dt>
+        <dd>@Model.PV1.PV1.ServicingFacility.Value</dd>
+        <dt>@Model.PV1.PV1.AccountStatus.Description (PV1.41)</dt>
+        <dd>@Model.PV1.PV1.AccountStatus.Value</dd>
+        <dt>@Model.PV1.PV1.AdmitDateTime.Description (PV1.44)</dt>
+        <dd>@Model.PV1.PV1.AdmitDateTime.TimeOfAnEvent</dd>
+        <dt>@Model.PV1.PV1.DischargeDateTime.Description (PV1.45)</dt>
+        <dd>@Model.PV1.PV1.DischargeDateTime.TimeOfAnEvent</dd>
+        <dt>Other Healthcare Provider(s) (PV1.52)</dt>
+        <dd>
+            @for (int j = 0; j < @Model.PV1.PV1.OtherHealthcareProviderRepetitionsUsed; j++)
+            {
+                var otherProv = @Model.PV1.PV1.GetOtherHealthcareProvider(j);
+                WriteLiteral(@Html.Encode(otherProv.IDNumber.Value + " - " + otherProv.FamilyName + ", " + otherProv.GivenName + " " + otherProv.MiddleInitialOrName + " (" + otherProv.SourceTable + ")"));
+                WriteLiteral("<br />");
+            }
+        </dd>
+        @*<dt>@Model.PV1.PV1</dt>
+            <dd>@Model.PV1.PV1</dd>
+            <dt>@Model.PV1.PV1</dt>
+            <dd>@Model.PV1.PV1</dd>
+            <dt>@Model.PV1.PV1</dt>
+            <dd>@Model.PV1.PV1</dd>
+            <dt>@Model.PV1.PV1</dt>
+            <dd>@Model.PV1.PV1</dd>
+            <dt>@Model.PV1.PV1</dt>
+            <dd>@Model.PV1.PV1</dd>*@
 
     </dl>
+
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

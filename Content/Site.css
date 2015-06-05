@@ -38,3 +38,11 @@ textarea {
     overflow: scroll;
     white-space: pre;
 }
+
+.fullwidth {
+    width: 100%;
+}
+
+.hl7Sample {
+    white-space: pre;
+}

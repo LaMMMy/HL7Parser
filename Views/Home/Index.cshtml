@@ -3,29 +3,27 @@
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>HL7 Parser</h1>
+    <p class="lead">HL7 Parser is a free web application that lets you parse your HL7v2 message and display it in a more readable format.</p>
+    <p>Get started by @Html.ActionLink("Parsing a Message", "Create", "Parse") to see what comes of it.</p>
 </div>
 
 <div class="row">
     <div class="col-md-4">
         <h2>Getting started</h2>
         <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
+            Just @Html.ActionLink("enter an HL7 message", "Create", "Parse") into the parser form and you will be given a parsed, readable output of the message.
         </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <p>@Html.ActionLink("Parse!", "Create", "Parse", null, new { @class = "btn btn-default" }) </p>
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <h2>Get Samples</h2>
+        <p>Don't have an HL7 message to parse, but want to try it out?</p>
+        <p>@Html.ActionLink("Get Samples!", "Samples", "Parse", null, new { @class = "btn btn-default" }) </p>
     </div>
     <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <h2>Resources</h2>
+        <p>Some handy HL7 resources to help you along the way. Because everyone knows, knowledge is power.</p>
+        <p><a class="btn btn-default" href="#">Resourcify!</a></p>
     </div>
 </div>
