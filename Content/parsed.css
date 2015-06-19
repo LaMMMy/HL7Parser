@@ -1,0 +1,27 @@
+﻿table {
+    border: 1px solid black;
+    width: 100%;
+}
+
+td {
+    border: 1px solid black;
+}
+.obxTestId{
+    width: 10%;
+}
+
+.obxTestName {
+    width: 30%;
+}
+
+.obxTestUnits {
+    width: 10%;
+}
+
+.obxTestResults {
+    width: 30%;
+}
+
+.obxTestStatus {
+    width: 5%;
+}

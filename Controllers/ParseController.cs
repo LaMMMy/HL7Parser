@@ -155,10 +155,11 @@ ZPR||";
 
             try
             {
-                FieldGroup messageGroup = new FieldGroup() { Name = message.GetStructureName() };
-                ProcessHelper.ProcessStructureGroup((AbstractGroup)message, messageGroup);
+                // create FieldGroup for us in the treeview
+                FieldGroup treeGroup = new FieldGroup() { Name = message.GetStructureName() };
+                ProcessHelper.ProcessStructureGroup((AbstractGroup)message, treeGroup);
 
-                fieldGroupList.Add(messageGroup);
+                fieldGroupList.Add(treeGroup);
             }
             catch (Exception ex)
             {
@@ -166,8 +167,7 @@ ZPR||";
 
             ParsedMessageViewModel viewModel = new ParsedMessageViewModel();
             viewModel.OriginalMessage = messageToParse.MessageData;
-            viewModel.MessageTree = fieldGroupList;
-            
+            viewModel.MessageTree = fieldGroupList;            
             viewModel.TransformedXML = GenerateXML(message);
 
             return View("ParseView", viewModel);

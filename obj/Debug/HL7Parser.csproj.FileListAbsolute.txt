@@ -111,6 +111,7 @@ D:\DEV\HL7Parser\bin\System.Web.WebPages.xml
 D:\DEV\HL7Parser\bin\System.Web.WebPages.Deployment.xml
 D:\DEV\HL7Parser\bin\System.Web.WebPages.Razor.xml
 D:\DEV\HL7Parser\bin\Microsoft.Web.Infrastructure.xml
-D:\DEV\HL7Parser\obj\Debug\HL7Parser.csprojResolveAssemblyReference.cache
 D:\DEV\HL7Parser\obj\Debug\HL7Parser.dll
 D:\DEV\HL7Parser\obj\Debug\HL7Parser.pdb
+D:\DEV\HL7Parser\obj\Debug\HL7Parser.csprojResolveAssemblyReference.cache
+D:\DEV\HL7Parser\bin\Resources\HL7v2.xsl

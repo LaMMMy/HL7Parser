@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace HL7Parser.Helpers
 {
-    public static class ProcessHelper
+    public static class ProcessHelperNew
     {
 
         /// <summary>
@@ -16,13 +16,13 @@ namespace HL7Parser.Helpers
         /// </summary>
         /// <param name="structureGroup">The structure group.</param>
         /// <param name="parentNode">The parent node, in the TreeListView.</param>
-        public static void ProcessStructureGroup(AbstractGroup structureGroup, FieldGroup parentNode)
+        public static void ProcessStructureGroupNew(AbstractGroup structureGroup, FieldGroup parentNode)
         {
             foreach (string segName in structureGroup.Names)
             {
                 foreach (IStructure struc in structureGroup.GetAll(segName))
                 {
-                    ProcessStructure(struc, parentNode);
+                    ProcessStructureNew(struc, parentNode);
                 }
             }
         }
@@ -34,17 +34,17 @@ namespace HL7Parser.Helpers
         /// </summary>
         /// <param name="structure">The structure.</param>
         /// <param name="parentNode">The parent node, in the TreeListView.</param>
-        private static void ProcessStructure(IStructure structure, FieldGroup parentNode)
+        private static void ProcessStructureNew(IStructure structure, FieldGroup parentNode)
         {
             if (structure.GetType().IsSubclassOf(typeof(AbstractSegment)))
             {
                 AbstractSegment seg = (AbstractSegment)structure;
-                ProcessSegment(seg, parentNode);
+                ProcessSegmentNew(seg, parentNode);
             }
             else if (structure.GetType().IsSubclassOf(typeof(AbstractGroup)))
             {
                 AbstractGroup structureGroup = (AbstractGroup)structure;
-                ProcessStructureGroup(structureGroup, parentNode);
+                ProcessStructureGroupNew(structureGroup, parentNode);
             }
             else
             {
@@ -58,7 +58,7 @@ namespace HL7Parser.Helpers
         /// </summary>
         /// <param name="segment">The segment.</param>
         /// <param name="parentNode">The parent node.</param>
-        private static void ProcessSegment(AbstractSegment segment, FieldGroup parentNode)
+        private static void ProcessSegmentNew(AbstractSegment segment, FieldGroup parentNode)
         {
             FieldGroup segmentNode = new FieldGroup() { Name = segment.GetStructureName(), Id = segment.GetStructureName() };
             int dataItemCount = 0;
@@ -69,11 +69,17 @@ namespace HL7Parser.Helpers
                 IType[] dataItems = segment.GetField(i);
                 foreach (IType item in dataItems)
                 {
-                    ProcessField(item, segment.GetFieldDescription(i), dataItemCount.ToString(), segmentNode);
+                    ProcessFieldNew(item, segment.GetFieldDescription(i), dataItemCount.ToString(), segmentNode);
+                }
+
+                if (dataItems.Count() == 0 && segmentNode.FieldList.Count > 0)
+                {
+                    AbstractPrimitive msg = null;
+                    ProcessPrimitiveFieldNew((AbstractPrimitive)msg, segment.GetFieldDescription(i), dataItemCount.ToString(), segmentNode);
                 }
             }
 
-            AddChildGroup(parentNode, segmentNode);
+            AddChildGroupNew(parentNode, segmentNode);
         }
 
         /// <summary>
@@ -84,21 +90,21 @@ namespace HL7Parser.Helpers
         /// <param name="fieldDescription">The field description.</param>
         /// <param name="fieldCount">The field count.</param>
         /// <param name="parentNode">The parent node.</param>
-        private static void ProcessField(IType item, string fieldDescription, string fieldCount, FieldGroup parentNode)
+        private static void ProcessFieldNew(IType item, string fieldDescription, string fieldCount, FieldGroup parentNode)
         {
             if (item.GetType().IsSubclassOf(typeof(AbstractPrimitive)))
             {
-                ProcessPrimitiveField((AbstractPrimitive)item, fieldDescription, fieldCount, parentNode);
+                ProcessPrimitiveFieldNew((AbstractPrimitive)item, fieldDescription, fieldCount, parentNode);
             }
             else if (item.GetType() == typeof(Varies))
             {
-                ProcessVaries((Varies)item, fieldDescription, fieldCount, parentNode);
+                ProcessVariesNew((Varies)item, fieldDescription, fieldCount, parentNode);
             }
             else if (item.GetType().GetInterfaces().Contains(typeof(IComposite)))
             {
                 AbstractType dataType = (AbstractType)item;
                 string desc = string.IsNullOrEmpty(dataType.Description) ? fieldDescription : dataType.Description;
-                ProcessCompositeField((IComposite)item, desc, fieldCount, parentNode);
+                ProcessCompositeFieldNew((IComposite)item, desc, fieldCount, parentNode);
             }
         }
 
@@ -111,15 +117,30 @@ namespace HL7Parser.Helpers
         /// <param name="fieldDescription">The field description.</param>
         /// <param name="fieldCount">The field count.</param>
         /// <param name="parentNode">The parent node.</param>
-        private static void ProcessPrimitiveField(AbstractPrimitive dataItem, string fieldDescription, string fieldCount, FieldGroup parentNode)
+        private static void ProcessPrimitiveFieldNew(AbstractPrimitive dataItem, string fieldDescription, string fieldCount, FieldGroup parentNode)
         {
-            string desc = fieldDescription == string.Empty ? dataItem.Description : fieldDescription;
+            int index = parentNode.Id.IndexOf(".");
 
-            string typnam = System.Text.RegularExpressions.Regex.Replace(dataItem.TypeName, @"ComponentOne", @"1");
-
-            if (!string.IsNullOrEmpty(dataItem.Value))
+            if (dataItem != null)
             {
-                parentNode.FieldList.Add(new FieldGroup() { Name = fieldCount.ToString() + " - " + desc, Id = parentNode.Id + "." + fieldCount, Value = dataItem.Value });
+                string desc = fieldDescription == string.Empty ? dataItem.Description : fieldDescription;
+                string typnam = System.Text.RegularExpressions.Regex.Replace(dataItem.TypeName, @"ComponentOne", @"1");
+
+                if (!string.IsNullOrEmpty(dataItem.Value))
+                {
+                    parentNode.FieldList.Add(new FieldGroup() { Name = fieldCount.ToString() + " - " + desc, Id = parentNode.Id + "." + fieldCount, Value = dataItem.Value });
+                }
+                else if (index == -1)
+                {
+                    //if (parentNode.Id.Substring(index).Length == 0)
+                    //{
+                    parentNode.FieldList.Add(new FieldGroup() { Name = fieldCount.ToString() + " - " + desc, Id = parentNode.Id + "." + fieldCount, Value = dataItem.Value });
+                    //}
+                }
+            }
+            else
+            {
+                parentNode.FieldList.Add(new FieldGroup() { Name = fieldCount.ToString() + " - " + fieldDescription, Id = parentNode.Id + "." + fieldCount, Value = string.Empty });
             }
         }
 
@@ -133,9 +154,9 @@ namespace HL7Parser.Helpers
         /// <param name="fieldDescription">The field description.</param>
         /// <param name="fieldCount">The field count.</param>
         /// <param name="parentNode">The parent node.</param>
-        private static void ProcessVaries(Varies varies, string fieldDescription, string fieldCount, FieldGroup parentNode)
+        private static void ProcessVariesNew(Varies varies, string fieldDescription, string fieldCount, FieldGroup parentNode)
         {
-            ProcessField(varies.Data, fieldDescription, fieldCount, parentNode);
+            ProcessFieldNew(varies.Data, fieldDescription, fieldCount, parentNode);
         }
 
         /// <summary>
@@ -147,7 +168,7 @@ namespace HL7Parser.Helpers
         /// <param name="fieldDescription">The field description.</param>
         /// <param name="fieldCount">The field count.</param>
         /// <param name="parentNode">The parent node.</param>
-        private static void ProcessCompositeField(IComposite composite, string fieldDescription, string fieldCount, FieldGroup parentNode)
+        private static void ProcessCompositeFieldNew(IComposite composite, string fieldDescription, string fieldCount, FieldGroup parentNode)
         {
             string desc = fieldDescription; // + ":" + composite.TypeName;
             FieldGroup subParent = new FieldGroup() { Name = fieldCount.ToString() + " - " + desc, Id = parentNode.Id + "." + fieldCount };
@@ -156,10 +177,10 @@ namespace HL7Parser.Helpers
             foreach (IType subItem in composite.Components)
             {
                 subItemCount++;
-                ProcessField(subItem, string.Empty, subItemCount.ToString(), subParent);
+                ProcessFieldNew(subItem, string.Empty, subItemCount.ToString(), subParent);
             }
 
-            AddChildGroup(parentNode, subParent);
+            AddChildGroupNew(parentNode, subParent);
         }
 
         /// <summary>
@@ -167,7 +188,7 @@ namespace HL7Parser.Helpers
         /// </summary>
         /// <param name="parentNode">The parent node.</param>
         /// <param name="childGroup">The child group.</param>
-        private static void AddChildGroup(FieldGroup parentNode, FieldGroup childGroup)
+        private static void AddChildGroupNew(FieldGroup parentNode, FieldGroup childGroup)
         {
             if (childGroup.FieldList.Count > 0)
             {

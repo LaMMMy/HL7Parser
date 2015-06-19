@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace HL7Parser
 {
@@ -9,7 +8,12 @@ namespace HL7Parser
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery-{version}.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
+                                    "~/Scripts/jquery-ui-{version}.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/jsTree").Include(
                         "~/Scripts/jsTree3/jsTree.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -27,6 +31,9 @@ namespace HL7Parser
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/parsedcss").Include(
+                      "~/Content/parsed.css"));
 
             bundles.Add(new StyleBundle("~/Content/treeviewcss").Include(
                     "~/Content/jsTree/themes/default/style.css"));
