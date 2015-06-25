@@ -8,6 +8,7 @@ namespace HL7Parser.Models
     public class ParsedMessageViewModel
     {
         public string OriginalMessage { get; set; }
+        public string OriginalXml { get; set; }
         public List<FieldGroup> MessageTree { get; set; }
         public string TransformedXML { get; set; }
     }

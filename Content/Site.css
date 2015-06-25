@@ -12,27 +12,40 @@
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
-.dl-horizontal dt {
+/*.dl-horizontal dt {
     white-space: normal;
     width: 260px;
 }
+
 .dl-horizontal dd {
     margin-left: 270px;
-  }
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 900px;
-}
+  }*/
 
 textarea {
-    max-width: 900px;
+    max-width: 760px;
     overflow-y: scroll;
     overflow-x: scroll;
     white-space: nowrap;
 }
+
+@media (max-width: 600px) {
+    textarea {
+        max-width: 325px;
+    }
+}
+
+@media (min-width: 601px)  and (max-width: 1430px) {
+    textarea {
+        max-width: 560px;
+    }
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select {
+    max-width: 900px;
+}
+
 
 .hl7display {
     overflow: scroll;
@@ -46,3 +59,139 @@ textarea {
 .hl7Sample {
     white-space: pre;
 }
+
+.bs-example {
+    position:relative;
+    padding:45px 15px 15px;
+    margin:0 -15px 15px;
+    border-color:#e5e5e5 #eee #eee;
+    border-style:solid;border-width:1px 0;
+    -webkit-box-shadow:inset 0 3px 6px rgba(0,0,0,.05);
+    box-shadow:inset 0 3px 6px rgba(0,0,0,.05)
+
+}
+
+.bs-example:after {
+    position:absolute;
+    top:15px;
+    left:15px;
+    font-size:12px;
+    font-weight:700;
+    color:#959595;
+    text-transform:uppercase;
+    letter-spacing:1px;
+    content:"Example"
+}
+
+.bs-example-padded-bottom {
+    padding-bottom:24px
+
+}
+.bs-example+.highlight,.bs-example+.zero-clipboard+.highlight {
+    margin:-15px -15px 15px;
+    border-width:0 0 1px;
+    border-radius:0
+
+}
+
+@media (min-width:768px) {
+    .bs-example {
+        margin-right: 0;
+        margin-left: 0;
+        background-color: #fff;
+        border-color: #ddd;
+        border-width: 1px;
+        border-radius: 4px 4px 0 0;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+    }
+
+        .bs-example + .highlight, .bs-example + .zero-clipboard + .highlight {
+            margin-top: -16px;
+            margin-right: 0;
+            margin-left: 0;
+            border-width: 1px;
+            border-bottom-right-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+
+    .bs-example-standalone {
+        border-radius: 4px;
+    }
+
+    .bs-example .container {
+        width: auto;
+    }
+
+    .bs-example > .alert:last-child, .bs-example > .form-control:last-child, .bs-example > .jumbotron:last-child, .bs-example > .list-group:last-child, .bs-example > .navbar:last-child, .bs-example > .panel:last-child, .bs-example > .progress:last-child, .bs-example > .table-responsive:last-child > .table, .bs-example > .table:last-child, .bs-example > .well:last-child, .bs-example > blockquote:last-child, .bs-example > ol:last-child, .bs-example > p:last-child, .bs-example > ul:last-child {
+        margin-bottom: 0;
+    }
+
+    .bs-example > p > .close {
+        float: none;
+    }
+
+    .bs-example-type .table .type-info {
+        color: #767676;
+        vertical-align: middle;
+    }
+
+    .bs-example-type .table td {
+        padding: 15px 0;
+        border-color: #eee;
+    }
+
+    .bs-example-type .table tr:first-child td {
+        border-top: 0;
+    }
+
+    .bs-example-type h1, .bs-example-type h2, .bs-example-type h3, .bs-example-type h4, .bs-example-type h5, .bs-example-type h6 {
+        margin: 0;
+    }
+
+    .bs-example-bg-classes p {
+        padding: 15px;
+    }
+
+    .bs-example > .img-circle, .bs-example > .img-rounded, .bs-example > .img-thumbnail {
+        margin: 5px;
+    }
+
+    .bs-example > .table-responsive > .table {
+        background-color: #fff;
+    }
+
+    .bs-example > .btn, .bs-example > .btn-group {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    .bs-example > .btn-toolbar + .btn-toolbar {
+        margin-top: 10px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .container {
+        width: 1370px;
+    }
+}
+
+/*@media (min-width: 992px) {
+    .container {
+        width: 970px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 750px;
+    }
+}*/
+
+    .container {
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }

@@ -9,412 +9,405 @@
 		</html>
 	</xsl:template>
 	<xsl:template match="n1:*">
-		<a name="MSH"><xsl:text> </xsl:text></a>
-		<a name="PID"><xsl:text> </xsl:text></a>
-		<a name="PV1"><xsl:text> </xsl:text></a>
-		<a name="ORC"><xsl:text> </xsl:text></a>
-		<a name="ZDR"><xsl:text> </xsl:text></a>
-		<a name="OBR"><xsl:text> </xsl:text></a>
-		<a name="NTE"><xsl:text> </xsl:text></a>
-		<br />
-		<br />
-		<br />
-		<table border="1px" width="100%" id="MSH">
-			<tbody>
-				<tr>
-					<th colspan="20">Message Header:</th>
-				</tr>
-				<xsl:apply-templates select="MSH"/>
-			</tbody>
-		</table>		
-		<br />		
-				<xsl:apply-templates select="//PID"/>
-				<xsl:apply-templates select="//PD1"/>
-				<xsl:apply-templates select="//NK1"/>
-				<xsl:apply-templates select="//PV1"/>
-				<xsl:apply-templates select="//AL1"/>
-				<xsl:apply-templates select="//IN1"/>
-		<br />
-				
+		<a name="MSH">
+			<xsl:text> </xsl:text>
+		</a>
+		<a name="PID">
+			<xsl:text> </xsl:text>
+		</a>
+		<a name="PV1">
+			<xsl:text> </xsl:text>
+		</a>
+		<a name="ORC">
+			<xsl:text> </xsl:text>
+		</a>
+		<a name="ZDR">
+			<xsl:text> </xsl:text>
+		</a>
+		<a name="OBR">
+			<xsl:text> </xsl:text>
+		</a>
+		<a name="NTE">
+			<xsl:text> </xsl:text>
+		</a>
+		<xsl:apply-templates select="MSH"/>
+		<xsl:apply-templates select="//PID"/>
+		<xsl:apply-templates select="//PD1"/>
+		<xsl:apply-templates select="//NK1"/>
+		<xsl:apply-templates select="//PV1"/>
+		<xsl:apply-templates select="//AL1"/>
+		<xsl:apply-templates select="//IN1"/>
 		<xsl:apply-templates select="//ORC"/>
-		<br />
-
-		
 		<xsl:apply-templates select="//ZDR"/>
-		<br />
-		
 		<xsl:apply-templates select="//OBR"/>
-		<br />
-				
 		<xsl:if test="//NTE">
-			<table width="100%" border="1px">
-				<tbody>
-					<tr>
-						<th>Notes:</th>
-					</tr>
-					<xsl:apply-templates select="//NTE"/>
-				</tbody>
-			</table>
+			<xsl:apply-templates select="//NTE"/>
+			
 		</xsl:if>
-		
 		<xsl:apply-templates select="//OBX[./OBX.2 != 'TX'][./OBX.3]" mode="labmode"/>
-		
-		<pre>
-			<xsl:text>
-			</xsl:text>
-			<xsl:apply-templates select="//OBX[not(./OBX.3)]|//OBX[./OBX.2 = 'TX']" mode="reportmode"/>
-			<xsl:text>
-			</xsl:text>
-		</pre>
-		<xsl:text>
-		</xsl:text>
-		
+
+		<xsl:apply-templates select="//OBX[not(./OBX.3)]|//OBX[./OBX.2 = 'TX']" mode="reportmode"/>
+
 	</xsl:template>
-	
 	<xsl:template match="MSH">
-		<tr>
-			<th>App:</th>
-			<th>Facility:</th>
-			<th>Msg Time:</th>
-			<th>Control ID:</th>
-			<th>Type:</th>
-			<th>Version:</th>
-			<xsl:if test="//EVN/EVN.2">
-				<th>Event Datetime:</th>
-				<xsl:if test="//EVN/EVN.5/*">
-					<th>
-						Operator
-					</th>
-				</xsl:if>
-			</xsl:if>
-		</tr>
-		<tr>
-			<td id="MSH.3">
-				<xsl:value-of select="MSH.3/*"/>
-			</td>
-			<td id="MSH.4">
-				<xsl:value-of select="MSH.4"/>
-			</td>
-			<td id="MSH.7">
-				<xsl:call-template name="formatDateTime">
-					<xsl:with-param name="date" select="MSH.7/*"/>
-				</xsl:call-template>
-			</td>
-			<td id="MSH.10">
-				<xsl:value-of select="MSH.10"/>
-			</td>
-			<td id="MSH.9">
-				<xsl:value-of select="MSH.9/*[1]"/>-<xsl:value-of select="MSH.9/*[2]"/>
-			</td>
-			<td id="MSH.12">
-				HL7 v<xsl:value-of select="MSH.12"/>
-			</td>
-			<xsl:if test="//EVN/EVN.2">
-				<td id="EVN.2">
-					<xsl:call-template name="formatDateTime">
-						<xsl:with-param name="date" select="//EVN/EVN.2/*"/>
-					</xsl:call-template>
-				</td>
-			</xsl:if>
-			<xsl:if test="//EVN/EVN.5/*">
-				<td id="EVN.5">
-					<xsl:value-of select="//EVN/EVN.5/*"/>
-				</td>
-			</xsl:if>
-		</tr>
+    <div class="table-responsive bs-example">
+	    <table class="table table-bordered">
+		    <tbody>
+			    <tr>
+				    <th colspan="20">Message Header:</th>
+			    </tr>
+			    <tr>
+				    <th>App:</th>
+				    <th>Facility:</th>
+				    <th>Msg Time:</th>
+				    <th>Control ID:</th>
+				    <th>Type:</th>
+				    <th>Version:</th>
+				    <xsl:if test="//EVN/EVN.2">
+					    <th>Event Datetime:</th>
+					    <xsl:if test="//EVN/EVN.5/*">
+						    <th>
+					    Operator
+				    </th>
+					    </xsl:if>
+				    </xsl:if>
+			    </tr>
+			    <tr>
+				    <td id="MSH.3">
+					    <xsl:value-of select="normalize-space(MSH.3)"/>
+				    </td>
+				    <td id="MSH.4">
+					    <xsl:value-of select="normalize-space(MSH.4)"/>
+				    </td>
+				    <td id="MSH.7">
+					    <xsl:call-template name="formatDateTime">
+						    <xsl:with-param name="date" select="normalize-space(MSH.7/*)"/>
+					    </xsl:call-template>
+				    </td>
+				    <td id="MSH.10">
+					    <xsl:value-of select="normalize-space(MSH.10)"/>
+				    </td>
+				    <td id="MSH.9">
+					    <xsl:value-of select="normalize-space(MSH.9/*[1])"/>_<xsl:value-of select="normalize-space(MSH.9/*[2])"/>
+				    </td>
+				    <td id="MSH.12">
+			    HL7 v<xsl:value-of select="normalize-space(MSH.12)"/>
+				    </td>
+				    <xsl:if test="//EVN/EVN.2">
+					    <td id="EVN.2">
+						    <xsl:call-template name="formatDateTime">
+							    <xsl:with-param name="date" select="normalize-space(//EVN/EVN.2/*)"/>
+						    </xsl:call-template>
+					    </td>
+				    </xsl:if>
+				    <xsl:if test="normalize-space(//EVN/EVN.5/*)">
+					    <td id="EVN.5">
+						    <xsl:value-of select="//EVN/EVN.5/*"/>
+					    </td>
+				    </xsl:if>
+			    </tr>
+		    </tbody>
+	    </table>
+     </div>
+		
 	</xsl:template>
 	
 	<xsl:template match="//PID">
-    <table>
-      <tbody>
-        <tr>
-          <th colspan="20">Patient Information:</th>
-        </tr>
-        <tr>
-          <th>Acct:</th>
-          <xsl:if test="PID.2/*|PID.3/*">
-            <th>ID:</th>
-          </xsl:if>
-          <xsl:if test="PID.4/*|PID.19">
-            <th>PHN:</th>
-          </xsl:if>
-          <th>Sex:</th>
-          <th>Name:</th>
-          <th>DOB:</th>
-          <th>Address:</th>
-          <th>Phone:</th>
-        </tr>
-        <tr>
-          <td id="PID.18">
-            <xsl:value-of select="PID.18/*"/>
-          </td>
-          <xsl:if test="PID.2/*|PID.3/*">
-            <td id="PID.3">
-              <xsl:for-each select="PID.3/*">
-                <xsl:value-of select="."/>
-                <br/>
-              </xsl:for-each>
-              <xsl:value-of select="PID.2/*"/>
-            </td>
-          </xsl:if>
-          <xsl:if test="PID.4/*|PID.19">
-            <td id="PID.4">
-              <xsl:value-of select="PID.19"/>
-              <xsl:if test="PID.4/*[text()] != PID.19[text()]">
-                <br/>
-                <xsl:value-of select="PID.4/*"/>
-              </xsl:if>
-            </td>
-          </xsl:if>
-          <td id="PID.8">
-            <xsl:value-of select="PID.8"/>
-          </td>
-          <td id="PID.5">
-            <xsl:for-each select="PID.5/*">
-              <xsl:if test="contains(name(),'.1')">
-                <b>
-                  <xsl:value-of select="."/>,
-                </b>
-                <br/>
-              </xsl:if>
-              <xsl:if test="not(contains(name(),'.1'))">
-                <xsl:value-of select="."/>
-                <xsl:text> </xsl:text>
-              </xsl:if>
-            </xsl:for-each>
-          </td>
-          <td id="PID.7">
-            <xsl:call-template name="formatDateTime">
-              <xsl:with-param name="date" select="PID.7/*"/>
-            </xsl:call-template>
-          </td>
-          <td id="PID.11">
-            <xsl:call-template name="formatAddress">
-              <xsl:with-param name="addr" select="PID.11/*"/>
-            </xsl:call-template>
-          </td>
-          <td id="PID.13">
-            <xsl:value-of select="PID.13/*"/>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  <br />
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<th colspan="20">Patient Information:</th>
+				</tr>
+				<tr>
+					<th>Acct:</th>
+					<xsl:if test="PID.2/*|PID.3/*">
+						<th>ID:</th>
+					</xsl:if>
+					<xsl:if test="PID.4/*|PID.19">
+						<th>PHN:</th>
+					</xsl:if>
+					<th>Sex:</th>
+					<th>Name:</th>
+					<th>DOB:</th>
+					<th>Address:</th>
+					<th>Phone:</th>
+				</tr>
+				<tr>
+					<td id="PID.18">
+						<xsl:value-of select="PID.18/*"/>
+					</td>
+					<xsl:if test="PID.2/*|PID.3/*">
+						<td id="PID.3">
+							<xsl:for-each select="PID.3/*">
+								<xsl:value-of select="."/>
+							</xsl:for-each>
+							<xsl:value-of select="PID.2/*"/>
+						</td>
+					</xsl:if>
+					<xsl:if test="PID.4/*|PID.19">
+						<td id="PID.4">
+							<xsl:value-of select="PID.19"/>
+							<xsl:if test="PID.4/*[text()] != PID.19[text()]">
+								<xsl:value-of select="PID.4/*"/>
+							</xsl:if>
+						</td>
+					</xsl:if>
+					<td id="PID.8">
+						<xsl:value-of select="PID.8"/>
+					</td>
+					<td id="PID.5">
+						<xsl:for-each select="PID.5/*">
+							<xsl:if test="contains(name(),'.1')">
+								<strong>
+									<xsl:value-of select="."/>,
+                </strong>
+							</xsl:if>
+							<xsl:if test="not(contains(name(),'.1'))">
+								<xsl:value-of select="."/>
+								<xsl:text> </xsl:text>
+							</xsl:if>
+						</xsl:for-each>
+					</td>
+					<td id="PID.7">
+						<xsl:call-template name="formatDateTime">
+							<xsl:with-param name="date" select="PID.7/*"/>
+						</xsl:call-template>
+					</td>
+					<td id="PID.11">
+						<xsl:call-template name="formatAddress">
+							<xsl:with-param name="addr" select="PID.11/*"/>
+						</xsl:call-template>
+					</td>
+					<td id="PID.13">
+						<xsl:value-of select="PID.13/*"/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
 	</xsl:template>
-
+	
 	<xsl:template match="//PD1">
 	</xsl:template>
-
+	
 	<xsl:template match="//NK1">
-		<tr>
-			<td colspan="2">
-				<xsl:text> </xsl:text>
-			</td>
-			<td>
-				<b>Next of Kin</b>
-			</td>
-			<td id="NK1.3">
-				<b>Relationship:</b>
-				<br/>
-				<xsl:choose>
-					<xsl:when test="NK1.3/*[contains(name(),'.2')]">
-						<xsl:value-of select="NK1.3/*[contains(name(),'.2')]"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="NK1.3/*[contains(name(),'.1')]"/>
-					</xsl:otherwise>
-				</xsl:choose>
-				<xsl:value-of select="NK1.3/*[contains(name(),'.2')]"/>
-			</td>
-			<td id="NK1.2">
-				<xsl:for-each select="NK1.2/*">
-					<xsl:if test="contains(name(),'.1')">
-						<b>
-							<xsl:value-of select="."/>,</b>
-						<br/>
-					</xsl:if>
-					<xsl:if test="not(contains(name(),'.1'))">
-						<xsl:value-of select="."/>
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<th colspan="20">Patient Information:</th>
+				</tr>
+				<tr>
+					<td colspan="2">
 						<xsl:text> </xsl:text>
+					</td>
+					<td>
+						<strong>Next of Kin</strong>
+					</td>
+					<td id="NK1.3">
+						<strong>Relationship:</strong>
+						<xsl:choose>
+							<xsl:when test="NK1.3/*[contains(name(),'.2')]">
+								<xsl:value-of select="NK1.3/*[contains(name(),'.2')]"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="NK1.3/*[contains(name(),'.1')]"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:value-of select="NK1.3/*[contains(name(),'.2')]"/>
+					</td>
+					<td id="NK1.2">
+						<xsl:for-each select="NK1.2/*">
+							<xsl:if test="contains(name(),'.1')">
+								<xsl:value-of select="."/>,
+						
 					</xsl:if>
-				</xsl:for-each>
-			</td>
-			<xsl:if test="NK1.7">
-				<td id="NK1.7">
-					<b>Contact Role:</b>
-					<br/>
-					<xsl:value-of select="NK1.7"/>
-				</td>
-			</xsl:if>
-			<td>
-				<b>Address:</b>
-				<br/>
-				<xsl:call-template name="formatAddress">
-					<xsl:with-param name="addr" select="NK1.4/*"/>
-				</xsl:call-template>
-			</td>
-			<xsl:if test="NK1.5">
-				<td id="NK1.5">
-					<b>Phone:</b>
-					<br/>
-					<xsl:value-of select="NK1.5"/>
-				</td>
-			</xsl:if>
-			<xsl:if test="NK1.6">
-				<td id="NK1.6">
-					<b>Work Phone:</b>
-					<br/>
-					<xsl:value-of select="NK1.6"/>
-				</td>
-			</xsl:if>
-		</tr>
-	</xsl:template>
-
-	<xsl:template match="//PV1">
-    <table>
-      <tbody>
-        <tr>
-          <th colspan="20">Visit Information:</th>
-        </tr>
-        <tr>
-          <xsl:if test="//PV2.3/*">
-            <th>Admit Reason:</th>
-          </xsl:if>
-          <xsl:if test="PV1.44/*">
-            <th>Admit Date:</th>
-          </xsl:if>
-          <xsl:if test="PV1.45/*">
-            <th>Discharge Date:</th>
-          </xsl:if>
-          <th>Location:</th>
-          <xsl:if test="PV1.4">
-            <th>Adm Type:</th>
-          </xsl:if>
-          <th>Acct Type:</th>
-          <xsl:if test="PV1.7/*">
-            <th>Attending Phys:</th>
-          </xsl:if>
-          <xsl:if test="PV1.9/*">
-            <th>Consulting Phys:</th>
-          </xsl:if>
-          <xsl:if test="PV1.17/*">
-            <th>Admitting Phys:</th>
-          </xsl:if>
-          <xsl:if test="PV1.52/*">
-            <th>Other Provider:</th>
-          </xsl:if>
-        </tr>
-        <tr>
-          <xsl:if test="//PV2.3/*">
-            <td>
-              <xsl:value-of select="//PV2.3/*"/>
-            </td>
-          </xsl:if>
-          <xsl:if test="PV1.44/*">
-            <td id="PV1.44">
-              <xsl:call-template name="formatDateTime">
-                <xsl:with-param name="date" select="PV1.44/*"/>
-              </xsl:call-template>
-            </td>
-          </xsl:if>
-          <xsl:if test="PV1.45/*">
-            <td id="PV1.45">
-              <xsl:call-template name="formatDateTime">
-                <xsl:with-param name="date" select="PV1.45/*"/>
-              </xsl:call-template>
-            </td>
-          </xsl:if>
-          <td>
-            <xsl:for-each select="PV1.3/*">
-              <xsl:value-of select="."/>
-              <br/>
-            </xsl:for-each>
-            <xsl:value-of select="PV1.39"/>
-          </td>
-          <xsl:if test="PV1.4">
-            <td id="PV1.4">
-              <xsl:value-of select="PV1.4"/>
-            </td>
-          </xsl:if>
-          <td>
-            <xsl:value-of select="PV1.41"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="PV1.18"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="PV1.2"/>
-            <br/>
-            <xsl:value-of select="PV1.10"/>
-          </td>
-          <xsl:if test="PV1.7/*">
-            <td id="PV1.7">
-              <xsl:call-template name="formatDoctor">
-                <xsl:with-param name="docField" select="PV1.7/*"/>
-              </xsl:call-template>
-            </td>
-          </xsl:if>
-          <xsl:if test="PV1.9/*">
-            <td id="PV1.9">
-              <xsl:call-template name="formatDoctor">
-                <xsl:with-param name="docField" select="PV1.9/*"/>
-              </xsl:call-template>
-            </td>
-          </xsl:if>
-          <xsl:if test="PV1.17/*">
-            <td id="PV1.17">
-              <xsl:call-template name="formatDoctor">
-                <xsl:with-param name="docField" select="PV1.17/*"/>
-              </xsl:call-template>
-            </td>
-          </xsl:if>
-          <xsl:if test="PV1.52/*">
-            <td id="PV1.52">
-              <xsl:call-template name="formatDoctor">
-                <xsl:with-param name="docField" select="PV1.52/*"/>
-              </xsl:call-template>
-            </td>
-          </xsl:if>
-        </tr>
-      </tbody>
-    </table>
-  <br />
-	</xsl:template>
-
-	<xsl:template match="//AL1">
-		<tr>
-			<th>Allergy Type</th>
-			<th>Allergy Info</th>
-			<xsl:if test="AL1.4">
-				<th>Severity</th>
-			</xsl:if>
-		</tr>
-		<tr>
-			<td>
-				<xsl:value-of select="AL1.2"/>
-			</td>
-			<td>
-				<table width="100%" border="1px">
-					<tr>
-						<xsl:for-each select="AL1.3/*">
-							<td>
+							<xsl:if test="not(contains(name(),'.1'))">
 								<xsl:value-of select="."/>
-							</td>
+								<xsl:text> </xsl:text>
+							</xsl:if>
 						</xsl:for-each>
-					</tr>
-				</table>
-			</td>
-			<xsl:if test="AL1.4">
-				<td>
-					<xsl:value-of select="AL1.4"/>
-				</td>
-			</xsl:if>
-		</tr>
+					</td>
+					<xsl:if test="NK1.7">
+						<td id="NK1.7">
+							<strong>Contact Role:</strong>
+							<xsl:value-of select="NK1.7"/>
+						</td>
+					</xsl:if>
+					<td>
+						<strong>Address:</strong>
+						<xsl:call-template name="formatAddress">
+							<xsl:with-param name="addr" select="NK1.4/*"/>
+						</xsl:call-template>
+					</td>
+					<xsl:if test="NK1.5">
+						<td id="NK1.5">
+							<strong>Phone:</strong>
+							<xsl:value-of select="NK1.5"/>
+						</td>
+					</xsl:if>
+					<xsl:if test="NK1.6">
+						<td id="NK1.6">
+							<strong>Work Phone:</strong>
+							<xsl:value-of select="NK1.6"/>
+						</td>
+					</xsl:if>
+				</tr>
+			</tbody>
+		</table>
+		
 	</xsl:template>
-
+	
+	<xsl:template match="//PV1">
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<th colspan="20">Visit Information:</th>
+				</tr>
+				<tr>
+					<xsl:if test="normalize-space(//PV2.3)">
+						<th>Admit Reason:</th>
+					</xsl:if>
+					<xsl:if test="PV1.44/*">
+						<th>Admit Date:</th>
+					</xsl:if>
+					<xsl:if test="PV1.45/*">
+						<th>Discharge Date:</th>
+					</xsl:if>
+					<th>Location:</th>
+					<xsl:if test="PV1.4">
+						<th>Adm Type:</th>
+					</xsl:if>
+					<th>Acct Type:</th>
+					<xsl:if test="PV1.7/*">
+						<th>Attending Phys:</th>
+					</xsl:if>
+					<xsl:if test="PV1.9/*">
+						<th>Consulting Phys:</th>
+					</xsl:if>
+					<xsl:if test="PV1.17/*">
+						<th>Admitting Phys:</th>
+					</xsl:if>
+					<xsl:if test="PV1.52/*">
+						<th>Other Provider:</th>
+					</xsl:if>
+				</tr>
+				<tr>
+					<xsl:if test="//PV2.3/*">
+						<td>
+							<xsl:value-of select="//PV2.3/*"/>
+						</td>
+					</xsl:if>
+					<xsl:if test="PV1.44/*">
+						<td id="PV1.44">
+							<xsl:call-template name="formatDateTime">
+								<xsl:with-param name="date" select="PV1.44/*"/>
+							</xsl:call-template>
+						</td>
+					</xsl:if>
+					<xsl:if test="PV1.45/*">
+						<td id="PV1.45">
+							<xsl:call-template name="formatDateTime">
+								<xsl:with-param name="date" select="PV1.45/*"/>
+							</xsl:call-template>
+						</td>
+					</xsl:if>
+					<td>
+						<xsl:for-each select="PV1.3/*">
+							<xsl:value-of select="."/>
+						</xsl:for-each>
+						<xsl:value-of select="PV1.39"/>
+					</td>
+					<xsl:if test="PV1.4">
+						<td id="PV1.4">
+							<xsl:value-of select="PV1.4"/>
+						</td>
+					</xsl:if>
+					<td>
+						<xsl:value-of select="PV1.41"/>
+						<xsl:text> </xsl:text>
+						<xsl:value-of select="PV1.18"/>
+						<xsl:text> </xsl:text>
+						<xsl:value-of select="PV1.2"/>
+						<xsl:value-of select="PV1.10"/>
+					</td>
+					<xsl:if test="PV1.7/*">
+						<td id="PV1.7">
+							<xsl:call-template name="formatDoctor">
+								<xsl:with-param name="docField" select="PV1.7/*"/>
+							</xsl:call-template>
+						</td>
+					</xsl:if>
+					<xsl:if test="PV1.9/*">
+						<td id="PV1.9">
+							<xsl:call-template name="formatDoctor">
+								<xsl:with-param name="docField" select="PV1.9/*"/>
+							</xsl:call-template>
+						</td>
+					</xsl:if>
+					<xsl:if test="PV1.17/*">
+						<td id="PV1.17">
+							<xsl:call-template name="formatDoctor">
+								<xsl:with-param name="docField" select="PV1.17/*"/>
+							</xsl:call-template>
+						</td>
+					</xsl:if>
+					<xsl:if test="PV1.52/*">
+						<td id="PV1.52">
+							<xsl:call-template name="formatDoctor">
+								<xsl:with-param name="docField" select="PV1.52/*"/>
+							</xsl:call-template>
+						</td>
+					</xsl:if>
+				</tr>
+			</tbody>
+		</table>
+		
+	</xsl:template>
+	
+	<xsl:template match="//AL1">
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<th colspan="20">Patient Information:</th>
+				</tr>
+				<tr>
+					<th>Allergy Type</th>
+					<th>Allergy Info</th>
+					<xsl:if test="AL1.4">
+						<th>Severity</th>
+					</xsl:if>
+				</tr>
+				<tr>
+					<td>
+						<xsl:value-of select="AL1.2"/>
+					</td>
+					<td>
+						<table width="100%" border="1px">
+							<tr>
+								<xsl:for-each select="AL1.3/*">
+									<td>
+										<xsl:value-of select="."/>
+									</td>
+								</xsl:for-each>
+							</tr>
+						</table>
+					</td>
+					<xsl:if test="AL1.4">
+						<td>
+							<xsl:value-of select="AL1.4"/>
+						</td>
+					</xsl:if>
+				</tr>
+			</tbody>
+		</table>
+		
+	</xsl:template>
+	
 	<xsl:template match="//IN1">
 	</xsl:template>
 	
 	<xsl:template match="//ORC">
-		<table border="1px" width="100%">
+		<table class="table table-bordered">
 			<tbody>
 				<tr>
 					<th colspan="20" width="100%">Order Information</th>
@@ -470,10 +463,11 @@
 				</tr>
 			</tbody>
 		</table>
+		
 	</xsl:template>
 	
 	<xsl:template match="//ZDR">
-		<table border="1px" width="100%">
+		<table class="table table-bordered">
 			<tbody>
 				<tr>
 					<th colspan="20" width="100%">
@@ -491,18 +485,27 @@
 				</tr>
 			</tbody>
 		</table>
+		
 	</xsl:template>
 	
 	<xsl:template match="//NTE">
-		<tr>
-			<td>
-				<xsl:value-of select="NTE.3"/>
-			</td>
-		</tr>
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<th>Notes:</th>
+				</tr>
+				<tr>
+					<td>
+						<xsl:value-of select="NTE.3"/>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
 	</xsl:template>
 	
 	<xsl:template match="//OBR">
-		<table width="100%" border="1px">
+		<table class="table table-bordered">
 			<tbody>
 				<tr>
 					<!-- Discharge Summary -->
@@ -539,20 +542,16 @@
 							<xsl:value-of select="OBR.24"/>
 						</td>
 						<td>
-							<table>
+							<table class="table table-bordered">
 								<tr>
 									<td id="OBR.4.1">
-										<b>Test ID:</b>
-										<br/>
+										<strong>Test ID:</strong>
 										<xsl:value-of select="OBR.4/*[contains(name(),'.1')]"/>
-										<br/>
 										<xsl:value-of select="OBR.4/*[contains(name(),'.4')]"/>
 									</td>
 									<td id="OBR.4.2">
-										<b>Test Name:</b>
-										<br/>
+										<strong>Test Name:</strong>
 										<xsl:value-of select="OBR.4/*[contains(name(),'.2')]"/>
-										<br/>
 										<xsl:value-of select="OBR.4/*[contains(name(),'.5')]"/>
 									</td>
 								</tr>
@@ -583,47 +582,40 @@
 				</tr>
 			</tbody>
 		</table>
+		
 	</xsl:template>
 	
 	<!-- Lab test results -->
 	<xsl:template match="//OBX[./OBX.2 != 'TX'][./OBX.3]" mode="labmode">
-		<table width="100%" border="1px">
+		<table class="table table-bordered">
 			<tbody>
 				<tr>
 					<th colspan="20">Test Results:</th>
 				</tr>
 				<tr>
 					<td class="obxTestId">
-						<b>Test ID:</b>
-						<br/>
+						<strong>Test ID:</strong>
 						<xsl:value-of select="OBX.3/*[contains(name(),'.1')]"/>
-						<br/>
 						<xsl:value-of select="OBX.3/*[contains(name(),'.4')]"/>
 					</td>
 					<td class="obxTestName">
-						<b>Test Name:</b>
-						<br/>
+						<strong>Test Name:</strong>
 						<xsl:value-of select="OBX.3/*[contains(name(),'.2')]"/>
-						<br/>
 						<xsl:value-of select="OBX.3/*[contains(name(),'.5')]"/>
 					</td>
 					<xsl:if test="OBX.6">
 						<td class="obxTestUnits">
-							<b>Units:</b>
-							<br/>
+							<strong>Units:</strong>
 							<xsl:value-of select="OBX.6"/>
 						</td>
 					</xsl:if>
 					<td class="obxTestResults">
-						<b>Results:</b>
-						<br/>
+						<strong>Results:</strong>
 						<xsl:if test="OBX.5">
 							<xsl:value-of select="OBX.5"/>
-							<br/>
 						</xsl:if>
 						<xsl:if test="OBX.7">
 							<xsl:value-of select="OBX.7"/>
-							<br/>
 						</xsl:if>
 						<xsl:if test="OBX.8">
               Abnormal: <xsl:value-of select="OBX.8"/>
@@ -631,23 +623,28 @@
 					</td>
 					<xsl:if test="OBX.11">
 						<td class="obxTestStatus">
-							<b>Status:</b>
-							<br/>
+							<strong>Status:</strong>
 							<xsl:value-of select="OBX.11"/>
 						</td>
 					</xsl:if>
 				</tr>
 			</tbody>
 		</table>
-	</xsl:template>
-
-	<!-- Reports -->
-	<xsl:template match="//OBX[not(./OBX.3)]|//OBX[./OBX.2 = 'TX']" mode="reportmode">
-		<xsl:value-of select="OBX.5"/>
-		<xsl:text>
-		</xsl:text>
+		
 	</xsl:template>
 	
+	<!-- Reports -->
+	<xsl:template match="//OBX[not(./OBX.3)]|//OBX[./OBX.2 = 'TX']" mode="reportmode">
+		<pre>
+			<xsl:text>
+			</xsl:text>
+			<xsl:value-of select="OBX.5"/>		
+			<xsl:text>
+			</xsl:text>
+		</pre>
+	</xsl:template>
+	
+	<!---->
 	<xsl:template name="formatDoctor">
 		<xsl:param name="docField"/>
 		<!-- Doctor's Licence Number -->
@@ -655,7 +652,6 @@
 		<xsl:text> </xsl:text>
 		<!-- Doctor's Mnemonic -->
 		<xsl:value-of select="$docField[contains(name(),'.8')]"/>
-		<br/>
 		<!-- Doctor's Name -->
 		<xsl:value-of select="$docField[contains(name(),'.6')]"/>
 		<xsl:text> </xsl:text>
@@ -665,11 +661,13 @@
 		<xsl:text> </xsl:text>
 		<xsl:value-of select="$docField[contains(name(),'.2')]"/>
 		<xsl:if test="$docField[contains(name(),'.15')]">
-			<br/>Type: 
+			Type: 
 			<xsl:value-of select="$docField[contains(name(),'.15')]"/>
 		</xsl:if>
 	</xsl:template>
-
+	
+	<!---->
+	<!-- Format DateTime-->
 	<xsl:template name="formatDateTime">
 		<xsl:param name="date"/>
 		<!-- month -->
@@ -786,7 +784,8 @@
 			</xsl:choose>
 		</xsl:if>
 	</xsl:template>
-	
+	<!---->
+	<!-- Format Address-->
 	<xsl:template name="formatAddress">
 		<xsl:param name="addr"/>
 		<xsl:for-each select="$addr">
@@ -798,9 +797,8 @@
 				<xsl:text> </xsl:text>
 			</xsl:if>
 			<xsl:if test="not(contains(name(),'.2'))">
-				<br/>
+				
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
-	
 </xsl:stylesheet>

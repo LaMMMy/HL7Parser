@@ -1,5 +1,5 @@
-﻿@model HL7Parser.Models.HL7Message
-
+﻿@*@model HL7Parser.Models.HL7Message*@
+@model HL7Parser.Models.ParsedMessageViewModel
 @{
     ViewBag.Title = "Create";
 }
@@ -15,9 +15,9 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.MessageData, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.OriginalMessage, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.MessageData, 30, 255, new
+                @Html.TextAreaFor(model => model.OriginalMessage, 30, 255, new
            {
                htmlAttributes = new
                {
@@ -46,7 +46,7 @@ ZDR||^Xavarie^Sonna^^^^^XAVS^^^^^XX^^ATP|
 ZPR||"
                }
            })
-                @Html.ValidationMessageFor(model => model.MessageData, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.OriginalMessage, "", new { @class = "text-danger" })
             </div>
         </div>
 

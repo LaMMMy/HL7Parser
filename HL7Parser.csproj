@@ -274,10 +274,11 @@
     <Content Include="Icon.png" />
     <Content Include="Resources\CDA.xsl" />
     <Content Include="Resources\database.xsl" />
-    <Content Include="Resources\HL7v2.xsl">
+    <EmbeddedResource Include="Resources\HL7v2.xsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
     <Content Include="Resources\HL7v2toCDA.xsl" />
+    <EmbeddedResource Include="Resources\HL7XmlToHTML.xslt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

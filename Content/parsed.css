@@ -25,3 +25,35 @@ td {
 .obxTestStatus {
     width: 5%;
 }
+
+.bs-example.PID:after {
+    content: "Patient Information"
+}
+
+.bs-example.MSH:after {
+    content: "Message Header"
+}
+
+.bs-example.PV1:after {
+    content: "Visit Information"
+}
+
+.bs-example.AL1:after {
+    content: "Allergy Information"
+}
+
+.bs-example.ORC:after {
+    content: "Order Common Information"
+}
+
+.bs-example.OBR:after {
+    content: "Order Observation Request Information"
+}
+
+.bs-example.OBX:after {
+    content: "Test Results"
+}
+
+.bs-example.ZDR:after {
+    content: "Distribution Providers"
+}

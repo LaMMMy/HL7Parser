@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Xsl;
@@ -17,7 +19,7 @@ namespace HL7Parser.Controllers
 {
     public class ParseController : Controller
     {
-        static HL7Message messageToParse = new HL7Message();
+        static ParsedMessageViewModel messageToParse = new ParsedMessageViewModel();
 
         // GET: Parse
         public ActionResult Index()
@@ -34,7 +36,7 @@ namespace HL7Parser.Controllers
         {
             PipeParser parser = new PipeParser();
 
-            var msg = parser.Parse(messageToParse.MessageData);
+            var msg = parser.Parse(messageToParse.OriginalMessage);
 
             var fieldGroupList = new List<FieldGroup>();
 
@@ -53,8 +55,8 @@ namespace HL7Parser.Controllers
             {
                 // populate a strongly typed object so we can access everything.
                 ParsedORUViewModel oru = new ParsedORUViewModel();
-                oru.OriginalMessage = messageToParse.MessageData;
-                oru.ORUMessage = (ORU_R01)parser.Parse(messageToParse.MessageData, "2.3");
+                oru.OriginalMessage = messageToParse.OriginalMessage;
+                oru.ORUMessage = (ORU_R01)parser.Parse(messageToParse.OriginalMessage, "2.3");
 
                 var oruResponse = oru.ORUMessage.GetRESPONSE();
                 oru.PID = oruResponse.PATIENT.PID;
@@ -83,26 +85,12 @@ namespace HL7Parser.Controllers
 
         }
 
-        private static NHapi.Base.Model.IMessage ExtractAndAssignMessage(NHapi.Base.Model.IMessage mess)
-        {
-            switch (mess.GetStructureName())
-            {
-                case "ORU_R01":
-                    mess = (NHapi.Model.V23.Message.ORU_R01)mess;
-                    break;
-                default:
-                    break;
-            }
-
-            return mess;
-        }
-
         //
         // GET: /Parse/Create
         public ActionResult Create()
         {
-            var model = new HL7Message();
-            model.MessageData = @"MSH|^~\&|LAB|MYFAC|LAB||201411130917||ORU^R01|3216598|D|2.3|||AL|NE|
+            ParsedMessageViewModel model = new ParsedMessageViewModel();
+            model.OriginalMessage = @"MSH|^~\&|LAB|MYFAC|LAB||201411130917||ORU^R01|3216598|D|2.3|||AL|NE|
 PID|1|ABC123DF|AND234DA_PID3|PID_4_ALTID|Patlast^Patfirst^Mid||19670202|F|||4505 21 st^^LAKE COUNTRY^BC^V4V 2S7||222-555-8484|||||MF0050356/15|
 PV1|1|O|MYFACSOMPL||||^Xavarie^Sonna^^^^^XAVS|||||||||||REF||SELF|||||||||||||||||||MYFAC||REG|||201411071440||||||||23390^PV1_52Surname^PV1_52Given^H^^Dr^^PV1_52Mnemonic|
 ORC|RE|PT103933301.0100|||CM|N|||201411130917|^Kyle^Andra^J.^^^^KYLA||^Xavarie^Sonna^^^^^XAVS|MYFAC|
@@ -133,7 +121,7 @@ ZPR||";
         {
             try
             {
-                messageToParse.MessageData = collection["MessageData"];
+                messageToParse.OriginalMessage = collection["OriginalMessage"];
                 return RedirectToAction("ParseView");
             }
             catch
@@ -142,14 +130,48 @@ ZPR||";
             }
         }
 
+        // When the "Reparse" Button is pressed.
+        // POST: /Parse/ParseView
+        [HttpPost]
+        public ActionResult ParseView(FormCollection collection)
+        {
+            try
+            {
+                messageToParse.OriginalMessage = collection["OriginalMessage"];
+                return RedirectToAction("ParseView");
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
         public ActionResult ParseView()
         {
             PipeParser parser = new PipeParser();
 
-            //ORU_R01 mess = (ORU_R01)messageToParse.ParsedData;
+            // Determine the message version, fix it if necessary
+            string messageVersion = "4";
+            string messageVersionRegex = @"(^MSH.*)(\|2\.)(\d)(\|)";
+            Match versionMatch = Regex.Match(messageToParse.OriginalMessage, messageVersionRegex);
+            if (versionMatch.Success)
+            {
+                messageVersion = versionMatch.Groups[3].Value;
+                switch (messageVersion)
+                {
+                    case "1": // Force version 2.1 to 2.2
+                        messageVersion = "2";
+                        ViewData["ErrorMessage"] = "Parsing as a Version 2." + messageVersion + " message.";
+                        break;
 
-            var message = parser.Parse(messageToParse.MessageData);
+                    case "6": // Force version 2.6 to 2.5
+                        messageVersion = "5";
+                        ViewData["ErrorMessage"] += "Parsing as a Version 2." + messageVersion + " message.";
+                        break;
+                }
+            }
+
+            var message = parser.Parse(messageToParse.OriginalMessage, "2." + messageVersion);
 
             var fieldGroupList = new List<FieldGroup>();
 
@@ -166,14 +188,21 @@ ZPR||";
             }
 
             ParsedMessageViewModel viewModel = new ParsedMessageViewModel();
-            viewModel.OriginalMessage = messageToParse.MessageData;
-            viewModel.MessageTree = fieldGroupList;            
-            viewModel.TransformedXML = GenerateXML(message);
+            viewModel.OriginalMessage = messageToParse.OriginalMessage;
+            viewModel.MessageTree = fieldGroupList;
+
+            viewModel.OriginalXml = GenerateXml(message);
+            viewModel.TransformedXML = TransformXml(viewModel.OriginalXml);
 
             return View("ParseView", viewModel);
         }
 
-        private string GenerateXML(IMessage message)
+        /// <summary>
+        /// Generates an xml string using the NHapi XMLParser.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        private string GenerateXml(IMessage message)
         {
             // Convert from HL7 object to XML
             XMLParser xmlParser = new DefaultXMLParser();
@@ -186,22 +215,43 @@ ZPR||";
                 // lError.Text = "Replacing root element with new namespace.";
                 sXML = System.Text.RegularExpressions.Regex.Replace(sXML, sRootNamespace, @"<ns0:$1 xmlns:ns0=$2/ns0:$1>");
             }
-            
+
+            return sXML;
+        }
+
+        /// <summary>
+        /// Transforms XML based on the transform supplied.
+        /// </summary>
+        /// <param name="sXML"></param>
+        /// <returns></returns>
+        private static string TransformXml(string sXML)
+        {
             XmlWriterSettings xmlSettings = new XmlWriterSettings();
             xmlSettings.Indent = true;
             xmlSettings.Encoding = Encoding.Unicode;
             xmlSettings.NewLineHandling = NewLineHandling.Replace;
             xmlSettings.ConformanceLevel = ConformanceLevel.Document;
 
-            XslCompiledTransform transformer = new XslCompiledTransform();
-            transformer.Load(("D:\\DEV\\HL7Parser\\Resources\\HL7v2.xsl"));
-
-            XmlReader xmlInput = XmlReader.Create(new StringReader(sXML));
+            //XslCompiledTransform transformer = new XslCompiledTransform();
+            //transformer.Load("D:\\DEV\\HL7Parser\\Resources\\HL7v2.xsl");
 
             StringBuilder xmlStringBuilder = new StringBuilder();
-            XmlWriter xmlHolder = XmlWriter.Create(xmlStringBuilder, xmlSettings);
+            using (Stream stream = Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("HL7Parser.Resources.HL7XmlToHTML.xslt"))
+            {
+                using (XmlReader reader = XmlReader.Create(stream))
+                {
+                    XslCompiledTransform transformer = new XslCompiledTransform();
+                    transformer.Load(reader);
 
-            transformer.Transform(xmlInput, xmlHolder);
+                    XmlReader xmlInput = XmlReader.Create(new StringReader(sXML));
+                    XmlWriter xmlHolder = XmlWriter.Create(xmlStringBuilder, xmlSettings);
+
+                    transformer.Transform(xmlInput, xmlHolder);
+                }
+            }
+
+
 
             return xmlStringBuilder.ToString();
         }

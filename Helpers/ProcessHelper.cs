@@ -119,7 +119,7 @@ namespace HL7Parser.Helpers
 
             if (!string.IsNullOrEmpty(dataItem.Value))
             {
-                parentNode.FieldList.Add(new FieldGroup() { Name = fieldCount.ToString() + " - " + desc, Id = parentNode.Id + "." + fieldCount, Value = dataItem.Value });
+                parentNode.FieldList.Add(new FieldGroup() { Name = parentNode.Id + "." + fieldCount.ToString() + " - " + (string.IsNullOrEmpty(desc) ? "Unknown" : desc), Id = parentNode.Id + "." + fieldCount, Value = dataItem.Value });
             }
         }
 
@@ -149,8 +149,8 @@ namespace HL7Parser.Helpers
         /// <param name="parentNode">The parent node.</param>
         private static void ProcessCompositeField(IComposite composite, string fieldDescription, string fieldCount, FieldGroup parentNode)
         {
-            string desc = fieldDescription; // + ":" + composite.TypeName;
-            FieldGroup subParent = new FieldGroup() { Name = fieldCount.ToString() + " - " + desc, Id = parentNode.Id + "." + fieldCount };
+            string desc = fieldDescription;
+            FieldGroup subParent = new FieldGroup() { Name = parentNode.Name + "." + fieldCount.ToString() + " - " + (string.IsNullOrEmpty(desc) ? "Unknown" : desc), Id = parentNode.Id + "." + fieldCount };
 
             int subItemCount = 0;
             foreach (IType subItem in composite.Components)
