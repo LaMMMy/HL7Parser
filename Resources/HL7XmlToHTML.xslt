@@ -55,20 +55,24 @@
 		<!--<xsl:apply-templates select="//ZDR"/>-->
 
 		<xsl:apply-templates select="//OBR"/>
-<!--		
+		
 		<xsl:if test="//NTE">
-			<xsl:apply-templates select="//NTE"/>
-			<br/>
+      <div class="bs-example NTE" id="NTE">
+			  <xsl:apply-templates select="//NTE"/>
+			</div>
 		</xsl:if>
--->
+
 		<div class="bs-example OBX" id="OBX">
 			<dl class="dl-horizontal">
 				<xsl:apply-templates select="//OBX[./OBX.2 != 'TX'][./OBX.3]" mode="labmode"/>
 			</dl>
+      <dl class="dl-horizontal">
+        <dd>
+          <xsl:apply-templates select="//OBX[not(./OBX.3)]|//OBX[./OBX.2 = 'TX']" mode="reportmode"/>
+        </dd>
+      </dl>
 		</div>
-
-		<xsl:apply-templates select="//OBX[not(./OBX.3)]|//OBX[./OBX.2 = 'TX']" mode="reportmode"/>
-
+    
 	</xsl:template>
 	<xsl:template match="MSH">
 		<div id="MSH" class="bs-example MSH info">
@@ -409,19 +413,15 @@
 	</xsl:template>-->
 	
 	<xsl:template match="//NTE">
-		<table>
-			<tbody>
-				<tr>
-					<th>Notes:</th>
-				</tr>
-				<tr>
-					<td>
-						<xsl:value-of select="NTE.3"/>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</xsl:template>
+    <div class="bs-example NTE" id="NTE">
+      <dl class="dl-horizontal">
+        <dt>Notes:</dt>
+        <dd>
+          <xsl:value-of select="NTE.3"/>
+        </dd>
+      </dl>
+    </div>
+  </xsl:template>
 	
 	<xsl:template match="//OBR">
 		<div class="bs-example OBR" id="OBR">
@@ -555,14 +555,9 @@
 	</xsl:template>
 	
 	<!-- Reports -->
-	<xsl:template match="//OBX[not(./OBX.3)]|//OBX[./OBX.2 = 'TX']" mode="reportmode">
-		<pre>
-			<xsl:text>
-			</xsl:text>
-			<xsl:value-of select="OBX.5"/>		
-			<xsl:text>
-			</xsl:text>
-		</pre>
+	<xsl:template match="//OBX[not(./OBX.3)]|//OBX[./OBX.2 = 'TX']" mode="reportmode">    
+		<xsl:value-of select="OBX.5"/>
+    <br />    
 	</xsl:template>
 	
 	<!---->

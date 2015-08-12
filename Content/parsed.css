@@ -51,9 +51,13 @@ td {
 }
 
 .bs-example.OBX:after {
-    content: "Test Results"
+    content: "OBX Values"
 }
 
 .bs-example.ZDR:after {
     content: "Distribution Providers"
+}
+
+.bs-example.NTE:after {
+    content: "Notes"
 }

@@ -149,7 +149,12 @@ namespace HL7Parser.Helpers
         {
             ValidateSettings();
 
-            var listItems = _items.ToList();
+            List<T> listItems = new List<T>();
+
+            if (_items != null)
+            {
+                listItems = _items.ToList();
+            }
 
             var ul = new TagBuilder("ul");
             ul.MergeAttributes(_htmlAttributes);

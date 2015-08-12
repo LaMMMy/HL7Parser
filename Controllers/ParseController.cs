@@ -17,7 +17,7 @@ using System.Xml.Xsl;
 
 namespace HL7Parser.Controllers
 {
-    public class ParseController : Controller
+    public class ParseController : BaseController
     {
         static ParsedMessageViewModel messageToParse = new ParsedMessageViewModel();
 
@@ -124,8 +124,9 @@ ZPR||";
                 messageToParse.OriginalMessage = collection["OriginalMessage"];
                 return RedirectToAction("ParseView");
             }
-            catch
+            catch(Exception ex)
             {
+                Danger("Something wrong with HL7 Message. " + ex.Message);
                 return View();
             }
         }
@@ -135,21 +136,65 @@ ZPR||";
         [HttpPost]
         public ActionResult ParseView(FormCollection collection)
         {
+            ParsedMessageViewModel viewModel = new ParsedMessageViewModel();
             try
-            {
+            {                
                 messageToParse.OriginalMessage = collection["OriginalMessage"];
+                viewModel.OriginalMessage = messageToParse.OriginalMessage;
+                PipeParser parser = new PipeParser();
+                string messageVersion = GetMessageVersion();
+
+                var message = parser.Parse(messageToParse.OriginalMessage, "2." + messageVersion);
+
                 return RedirectToAction("ParseView");
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                Danger("Looks like something went wrong. " + ex.Message);
+                return View(viewModel);
             }
         }
-
+        
         public ActionResult ParseView()
         {
             PipeParser parser = new PipeParser();
 
+            // Determine the message version, fix it if necessary
+            string messageVersion = GetMessageVersion();
+
+            ParsedMessageViewModel viewModel = new ParsedMessageViewModel();
+            
+            try
+            {
+                viewModel.OriginalMessage = messageToParse.OriginalMessage;
+
+                var message = parser.Parse(messageToParse.OriginalMessage, "2." + messageVersion);                
+
+                var fieldGroupList = new List<FieldGroup>();
+
+                // create FieldGroup for us in the treeview
+                FieldGroup treeGroup = new FieldGroup() { Name = message.GetStructureName() };
+                ProcessHelper.ProcessStructureGroup((AbstractGroup)message, treeGroup);
+
+                fieldGroupList.Add(treeGroup);
+                
+                viewModel.MessageTree = fieldGroupList;
+
+                viewModel.OriginalXml = GenerateXml(message);
+                viewModel.TransformedXML = TransformXml(viewModel.OriginalXml);
+
+            }
+            catch (Exception ex)
+            {
+                Danger("Something wrong with HL7 Message. " + ex.Message);
+                return View("ParseView", viewModel);
+            }
+
+            return View("ParseView", viewModel);
+        }
+        
+        private string GetMessageVersion()
+        {
             // Determine the message version, fix it if necessary
             string messageVersion = "4";
             string messageVersionRegex = @"(^MSH.*)(\|2\.)(\d)(\|)";
@@ -171,30 +216,7 @@ ZPR||";
                 }
             }
 
-            var message = parser.Parse(messageToParse.OriginalMessage, "2." + messageVersion);
-
-            var fieldGroupList = new List<FieldGroup>();
-
-            try
-            {
-                // create FieldGroup for us in the treeview
-                FieldGroup treeGroup = new FieldGroup() { Name = message.GetStructureName() };
-                ProcessHelper.ProcessStructureGroup((AbstractGroup)message, treeGroup);
-
-                fieldGroupList.Add(treeGroup);
-            }
-            catch (Exception ex)
-            {
-            }
-
-            ParsedMessageViewModel viewModel = new ParsedMessageViewModel();
-            viewModel.OriginalMessage = messageToParse.OriginalMessage;
-            viewModel.MessageTree = fieldGroupList;
-
-            viewModel.OriginalXml = GenerateXml(message);
-            viewModel.TransformedXML = TransformXml(viewModel.OriginalXml);
-
-            return View("ParseView", viewModel);
+            return messageVersion;
         }
 
         /// <summary>
