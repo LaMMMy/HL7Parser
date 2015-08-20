@@ -17,7 +17,7 @@
 <div class="row panel">
     <div class="col-md-7">
         <h3>Original Message</h3>
-        <span></span>
+        
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
@@ -50,10 +50,10 @@
     ZDR||^Xavarie^Sonna^^^^^XAVS^^^^^XX^^ATP|
     ZPR||"
                 }
-            })
+        })
                 <div class="form-group">
                     <div class="col-md-10">
-                        <input type="submit" value="Reparse" class="btn btn-default" />
+                        <input type="submit" value="Reparse" class="btn btn-custom" />
                     </div>
                 </div>
             </div>
@@ -64,12 +64,12 @@
 
         <div id="treeview">
             @(Html.TreeView(Model.MessageTree)
-    .EmptyContent("No locations have been defined yet!")
-    .Children(m => m.FieldList)
-    .HtmlAttributes(new { id = "tree" })
-    .ChildrenHtmlAttributes(new { @class = "subItem" })
-    .ItemText(m => m.Name)
-    .ItemTemplate(
+.EmptyContent("No locations have been defined yet!")
+.Children(m => m.FieldList)
+.HtmlAttributes(new { id = "tree" })
+.ChildrenHtmlAttributes(new { @class = "subItem" })
+.ItemText(m => m.Name)
+.ItemTemplate(
     @<text>
         <a href="#@item.Id">
             @item.Name
@@ -88,9 +88,10 @@
 <div id="tableView">
     @Html.Raw(@Model.TransformedXML)
 </div>
+
 <hr />
 <p>
-    @Html.ActionLink("Parse another Message", "Create")
+    @Html.ActionLink("Parse another Message", "Create", null, new { @class = "custom-anchor" })
 </p>
 
 <script type="text/javascript">

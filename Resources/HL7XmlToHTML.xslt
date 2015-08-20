@@ -58,8 +58,13 @@
 		
 		<xsl:if test="//NTE">
       <div class="bs-example NTE" id="NTE">
-			  <xsl:apply-templates select="//NTE"/>
-			</div>
+          <dl class="dl-horizontal">
+            <dt></dt>
+            <dd>
+			        <xsl:apply-templates select="//NTE"/>
+            </dd>
+          </dl>
+      </div>
 		</xsl:if>
 
 		<div class="bs-example OBX" id="OBX">
@@ -413,14 +418,8 @@
 	</xsl:template>-->
 	
 	<xsl:template match="//NTE">
-    <div class="bs-example NTE" id="NTE">
-      <dl class="dl-horizontal">
-        <dt>Notes:</dt>
-        <dd>
-          <xsl:value-of select="NTE.3"/>
-        </dd>
-      </dl>
-    </div>
+    <xsl:value-of select="NTE.3"/>
+    <br />
   </xsl:template>
 	
 	<xsl:template match="//OBR">
@@ -478,21 +477,30 @@
 							<xsl:value-of select="OBR.25"/>
 						</dd>
 					</xsl:when>
-					<xsl:when test="OBR.4/*[contains(name(),'.2')] = 'Discharge Summary'">
-						<dt>Discharge Summary Date</dt>
-						<dd id="OBR.22">
-							<xsl:call-template name="formatDateTime">
-								<xsl:with-param name="date" select="OBR.22/*"/>
-							</xsl:call-template>
-						</dd>
-					</xsl:when>
-				</xsl:choose>
-				<dt>Copies To</dt>
-				<dd id="OBR.28">
-					<xsl:call-template name="FormatProvider">
-						<xsl:with-param name="docField" select="OBR.28/*"/>
-					</xsl:call-template>
-				</dd>
+          <xsl:otherwise>
+            <dt>Report Name</dt>
+            <dd>
+              <xsl:value-of select="normalize-space(OBR.4/CE.2)"/>
+            </dd>
+            <xsl:if test="OBR.4/*[contains(name(),'.2')] = 'Discharge Summary'">
+              <dt>Summary Date</dt>
+              <dd id="OBR.22">
+                <xsl:call-template name="formatDateTime">
+                  <xsl:with-param name="date" select="OBR.22/*"/>
+                </xsl:call-template>
+              </dd>
+            </xsl:if>
+          </xsl:otherwise>
+        </xsl:choose>
+
+        <xsl:if test="normalize-space(OBR.28) != ''">
+				  <dt>Copies To</dt>
+				  <dd id="OBR.28">
+					  <xsl:call-template name="FormatProvider">
+						  <xsl:with-param name="docField" select="OBR.28/*"/>
+					  </xsl:call-template>
+				  </dd>
+        </xsl:if>
 			</dl>
 		</div>
 	</xsl:template>

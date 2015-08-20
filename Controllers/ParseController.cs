@@ -140,11 +140,6 @@ ZPR||";
             try
             {                
                 messageToParse.OriginalMessage = collection["OriginalMessage"];
-                viewModel.OriginalMessage = messageToParse.OriginalMessage;
-                PipeParser parser = new PipeParser();
-                string messageVersion = GetMessageVersion();
-
-                var message = parser.Parse(messageToParse.OriginalMessage, "2." + messageVersion);
 
                 return RedirectToAction("ParseView");
             }
@@ -206,12 +201,12 @@ ZPR||";
                 {
                     case "1": // Force version 2.1 to 2.2
                         messageVersion = "2";
-                        ViewData["ErrorMessage"] = "Parsing as a Version 2." + messageVersion + " message.";
+                        Warning("Parsing as a Version 2." + messageVersion + " message.");
                         break;
 
                     case "6": // Force version 2.6 to 2.5
                         messageVersion = "5";
-                        ViewData["ErrorMessage"] += "Parsing as a Version 2." + messageVersion + " message.";
+                        Warning("Parsing as a Version 2." + messageVersion + " message.");
                         break;
                 }
             }

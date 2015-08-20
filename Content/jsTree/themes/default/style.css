@@ -287,12 +287,12 @@
   transition: background-color 0.15s, box-shadow 0.15s;
 }
 .jstree-default .jstree-hovered {
-  background: #e7f4f9;
+  background: rgba(0, 209, 177, 0.11);
   border-radius: 2px;
   box-shadow: inset 0 0 1px #cccccc;
 }
 .jstree-default .jstree-clicked {
-  background: #beebff;
+  background: rgba(0, 209, 177, 0.33);
   border-radius: 2px;
   box-shadow: inset 0 0 1px #999999;
 }
@@ -360,9 +360,7 @@
   background: #e7f4f9;
 }
 .jstree-default .jstree-wholerow-clicked {
-  background: #beebff;
-  background: -webkit-linear-gradient(top, #beebff 0%, #a8e4ff 100%);
-  background: linear-gradient(to bottom, #beebff 0%, #a8e4ff 100%);
+  background: rgba(0, 209, 177, 0.33);
 }
 .jstree-default .jstree-node {
   min-height: 24px;
@@ -978,7 +976,7 @@
     background: #e7f4f9;
   }
   .jstree-default-responsive .jstree-wholerow-clicked {
-    background: #beebff;
+    background: rgba(0, 209, 177, 0.33);
   }
   .jstree-default-responsive .jstree-children .jstree-last > .jstree-wholerow {
     box-shadow: inset 0 -6px 3px -5px #666666;
