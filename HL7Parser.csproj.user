@@ -10,7 +10,7 @@
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
     <WebStackScaffolding_DbContextTypeFullName>HL7Parser.Models.ApplicationDbContext</WebStackScaffolding_DbContextTypeFullName>
     <ProjectView>ProjectFiles</ProjectView>
-    <NameOfLastUsedPublishProfile>hl7parse %282%29</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>hl7parse - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
