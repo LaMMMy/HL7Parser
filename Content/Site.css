@@ -189,7 +189,7 @@ select {
 }*/
 
 .navbar-custom {
-  background-color: #23475f;
+  background-color: #00d1b1;
   border-color: #00b497;
 }
 .navbar-custom .navbar-brand {
@@ -249,7 +249,7 @@ select {
 }
 
 .navbar-custom-inverse {
-  background-color: #23475f;
+  background-color: #3e4f5b;
   border-color: #00d1b1;
 }
 .navbar-custom-inverse .navbar-brand {
