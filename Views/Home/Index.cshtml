@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Online HL7 Message Parser";
 }
 
 <div class="jumbotron">
@@ -10,16 +10,16 @@
 
 <div class="row">
     <div class="col-md-4">
-        <h2>Getting started</h2>
+        <h2>Parse an HL7 Message</h2>
         <p>
             Just @Html.ActionLink("enter an HL7 message", "Create", "Parse") into the parser form and you will be given a parsed, readable output of the message.
         </p>
-        <p>@Html.ActionLink("Parse!", "Create", "Parse", null, new { @class = "btn btn-default" }) </p>
+        <p>@Html.ActionLink("Parse HL7!", "Create", "Parse", null, new { @class = "btn btn-default" }) </p>
     </div>
     <div class="col-md-4">
         <h2>Get Samples</h2>
         <p>Don't have an HL7 message to parse, but want to try it out?</p>
-        <p>@Html.ActionLink("Get Samples!", "Samples", "Parse", null, new { @class = "btn btn-default" }) </p>
+        <p>@Html.ActionLink("Get HL7 Message Samples!", "Samples", "Parse", null, new { @class = "btn btn-default" }) </p>
     </div>
     <div class="col-md-4">
         <h2>Resources</h2>
