@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -224,16 +225,36 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\jsTree\docs.css" />
-    <Content Include="Content\jsTree\themes\default-dark\32px.png" />
-    <Content Include="Content\jsTree\themes\default-dark\40px.png" />
-    <Content Include="Content\jsTree\themes\default-dark\style.css" />
-    <Content Include="Content\jsTree\themes\default-dark\style.min.css" />
-    <Content Include="Content\jsTree\themes\default-dark\throbber.gif" />
-    <Content Include="Content\jsTree\themes\default\32px.png" />
-    <Content Include="Content\jsTree\themes\default\40px.png" />
-    <Content Include="Content\jsTree\themes\default\style.css" />
-    <Content Include="Content\jsTree\themes\default\style.min.css" />
-    <Content Include="Content\jsTree\themes\default\throbber.gif" />
+    <Content Include="Content\jsTree\themes\default-dark\32px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jsTree\themes\default-dark\40px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jsTree\themes\default-dark\style.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jsTree\themes\default-dark\style.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jsTree\themes\default-dark\throbber.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jsTree\themes\default\32px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jsTree\themes\default\40px.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jsTree\themes\default\style.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jsTree\themes\default\style.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\jsTree\themes\default\throbber.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\parsed.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
