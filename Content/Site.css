@@ -360,3 +360,8 @@ fieldset[disabled] .btn-custom.active {
 .custom-anchor {
     color: #00D1B1;
 }
+
+span.right
+{
+    float: right;
+}

@@ -121,7 +121,7 @@ ZPR||";
         {
             try
             {
-                messageToParse.OriginalMessage = collection["OriginalMessage"];
+                messageToParse.OriginalMessage = collection["OriginalMessage"].Trim();
                 return RedirectToAction("ParseView");
             }
             catch(Exception ex)
