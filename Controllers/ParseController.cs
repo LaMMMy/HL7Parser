@@ -49,6 +49,7 @@ namespace HL7Parser.Controllers
             }
             catch (Exception ex)
             {
+                // ignore for now?
             }
 
             if (msg.GetStructureName() == "ORU_R01")
