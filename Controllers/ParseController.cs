@@ -270,9 +270,6 @@ ZPR||";
                     transformer.Transform(xmlInput, xmlHolder);
                 }
             }
-
-
-
             return xmlStringBuilder.ToString();
         }
     }
