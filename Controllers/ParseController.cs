@@ -50,6 +50,7 @@ namespace HL7Parser.Controllers
             catch (Exception ex)
             {
                 // ignore for now?
+                Danger($"Exception processing message structure. {ex.GetExceptionMessageWithInner()}");
             }
 
             if (msg.GetStructureName() == "ORU_R01")
@@ -126,8 +127,8 @@ ZPR||";
                 return RedirectToAction("ParseView");
             }
             catch(Exception ex)
-            {
-                Danger("Something wrong with HL7 Message. " + ex.Message);
+            {                
+                Danger($"Something wrong with HL7 Message. {ex.GetExceptionMessageWithInner()}");
                 return View();
             }
         }
@@ -145,8 +146,8 @@ ZPR||";
                 return RedirectToAction("ParseView");
             }
             catch(Exception ex)
-            {
-                Danger("Looks like something went wrong. " + ex.Message);
+            {                
+                Danger($"Looks like something went wrong. {ex.GetExceptionMessageWithInner()}");
                 return View(viewModel);
             }
         }
@@ -182,7 +183,8 @@ ZPR||";
             }
             catch (Exception ex)
             {
-                Danger("Something wrong with HL7 Message. " + ex.Message);
+                Danger($"Something wrong with HL7 Message. {ex.GetExceptionMessageWithInner()}");
+
                 return View("ParseView", viewModel);
             }
 

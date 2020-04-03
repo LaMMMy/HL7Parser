@@ -152,6 +152,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Alert.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\MessageViewHelper.cs" />
     <Compile Include="Helpers\ProcessHelper.cs" />
     <Compile Include="Helpers\ProcessHelperNew.cs" />
