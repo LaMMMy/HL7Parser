@@ -281,3 +281,5 @@ C:\DEV\HL7Parser\bin\System.Web.WebPages.Deployment.xml
 C:\DEV\HL7Parser\bin\System.Web.WebPages.Razor.xml
 C:\DEV\HL7Parser\obj\Debug\HL7Parser.csproj.CopyComplete
 C:\DEV\HL7Parser\obj\Debug\HL7Parser.csprojAssemblyReference.cache
+C:\DEV\HL7Parser\obj\Debug\HL7Parser.Properties.Resources.resources
+C:\DEV\HL7Parser\obj\Debug\HL7Parser.csproj.GenerateResource.cache

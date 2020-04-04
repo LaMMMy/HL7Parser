@@ -9,6 +9,13 @@ namespace HL7Parser.Models
     {
         public string OriginalMessage { get; set; }
         public string OriginalXml { get; set; }
+        public PID PIDSegment { get; set; }
+        public ORC ORCSegment { get; set; }
+        public List<IN1> IN1List { get; set; }
+        public List<IN2> IN2List { get; set; }
+        public List<GT1> GT1List { get; set; }
+        public List<ORU_R01_ORDER_OBSERVATION> OBRList { get; set; }
+        public List<ORU_R01_OBSERVATION> OBXList { get; set; }
         public List<FieldGroup> MessageTree { get; set; }
         public string TransformedXML { get; set; }
     }

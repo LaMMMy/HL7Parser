@@ -38,6 +38,18 @@ td {
     content: "Visit Information"
 }
 
+.bs-example.NK1:after {
+    content: "Next Of Kin"
+}
+
+.bs-example.IN1:after {
+    content: "Insurance Info"
+}
+
+.bs-example.IN2:after {
+    content: "Additional Insurance Info"
+}
+
 .bs-example.AL1:after {
     content: "Allergy Information"
 }
@@ -48,6 +60,10 @@ td {
 
 .bs-example.OBR:after {
     content: "Order Observation Request Information"
+}
+
+.bs-example.DG1:after {
+    content: "Diagnosis Information"
 }
 
 .bs-example.OBX:after {

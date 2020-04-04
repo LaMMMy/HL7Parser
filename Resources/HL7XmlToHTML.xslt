@@ -21,6 +21,14 @@
       </body>
     </html>
   </xsl:template>
+  <!--
+  ***NOTE:
+  go into the "Parsed.css" file and add 
+  .bs-example.<SEGMENT>:after {
+    content: "<segment description>"
+  }
+  so that a header gets added to the section.
+  -->
   <xsl:template match="n1:*">
     <a name="MSH">
       <xsl:text> </xsl:text>
@@ -32,6 +40,12 @@
       <xsl:text> </xsl:text>
     </a>
     <a name="ORC">
+      <xsl:text> </xsl:text>
+    </a>
+    <a name="IN1">
+      <xsl:text> </xsl:text>
+    </a>
+    <a name="DG1">
       <xsl:text> </xsl:text>
     </a>
     <a name="ZDR">
@@ -51,6 +65,7 @@
 
     <xsl:apply-templates select="//AL1"/>
     <xsl:apply-templates select="//IN1"/>
+    <xsl:apply-templates select="//DG1"/>
     <xsl:apply-templates select="//ORC"/>
     <!--<xsl:apply-templates select="//ZDR"/>-->
 
@@ -67,26 +82,27 @@
       </div>
     </xsl:if>
 
-
-    <div class="bs-example OBX" id="OBX">
-      <xsl:choose>
-        <xsl:when test="($sendingApp = 'LAB') or ($sendingApp = 'MIC') or ($sendingApp = 'MB') or ($receivingApp = 'MB')">
-          <dl class="dl-horizontal">
-            <xsl:apply-templates select="//OBX[./OBX.2 != 'TX'][./OBX.3]" mode="labmode"/>
-          </dl>
-          <dl class="dl-horizontal">
-            <dd>
-              <xsl:apply-templates select="//OBX[not(./OBX.3)]|//OBX[./OBX.2 = 'TX']" mode="reportmode"/>
-            </dd>
-          </dl>
-        </xsl:when>
-        <xsl:otherwise>
-          <dl class="dl-horizontal">
+    <xsl:if test="//OBX">
+      <div class="bs-example OBX" id="OBX">
+        <xsl:choose>
+          <xsl:when test="($sendingApp = 'LAB') or ($sendingApp = 'MIC') or ($sendingApp = 'MB') or ($receivingApp = 'MB')">
+            <dl class="dl-horizontal">
+              <xsl:apply-templates select="//OBX[./OBX.2 != 'TX'][./OBX.3]" mode="labmode"/>
+            </dl>
+            <dl class="dl-horizontal">
+              <dd>
+                <xsl:apply-templates select="//OBX[not(./OBX.3)]|//OBX[./OBX.2 = 'TX']" mode="reportmode"/>
+              </dd>
+            </dl>
+          </xsl:when>
+          <xsl:otherwise>
+            <dl class="dl-horizontal">
               <xsl:apply-templates select="//OBX" mode="reportmode"/>
-          </dl> 
-        </xsl:otherwise>
-      </xsl:choose>
-    </div>
+            </dl>
+          </xsl:otherwise>
+        </xsl:choose>
+      </div>
+    </xsl:if>
 
 
   </xsl:template>
@@ -356,6 +372,49 @@
             <xsl:value-of select="AL1.4"/>
           </dd>
         </xsl:if>
+        <xsl:if test="AL1.5">
+          <dt>Reaction</dt>
+          <dd id="AL1.5">
+            <xsl:for-each select="AL1.5/*">
+              <xsl:value-of select="."/>
+            </xsl:for-each>
+          </dd>
+        </xsl:if>
+      </dl>
+    </div>
+  </xsl:template>
+
+  <xsl:template match="//DG1">
+    <div class="bs-example DG1" id="DG1">
+      <dl class="dl-horizontal">
+        <dt>Diagnosis Coding Method</dt>
+        <dd id="DG1.2">
+          <xsl:value-of select="DG1.2"/>
+        </dd>
+        <dt>Diagnosis Code</dt>
+        <dd id="DG1.3">
+          <xsl:for-each select="DG1.3/*">
+            <xsl:value-of select="."/>
+          </xsl:for-each>
+        </dd>
+        <xsl:if test="DG1.4">
+          <dt>Diagnosis Description</dt>
+          <dd id="DG1.4">
+            <xsl:value-of select="DG1.4"/>
+          </dd>
+        </xsl:if>
+        <xsl:if test="DG1.5">
+          <dt>Diagnosis DateTime</dt>
+          <dd id="DG1.5">
+            <xsl:value-of select="DG1.5/TS.1"/>
+          </dd>
+        </xsl:if>
+        <xsl:if test="DG1.6">
+          <dt>Diagnosis Type</dt>
+          <dd id="DG1.6">
+            <xsl:value-of select="DG1.6"/>
+          </dd>
+        </xsl:if>
       </dl>
     </div>
   </xsl:template>
@@ -586,8 +645,8 @@
   <!--<xsl:template match="//OBX[not(./OBX.3)]|//OBX[./OBX.2 = 'TX']" mode="reportmode">
   OBX|9|CE|PCS.RDW10^Visit Type:^ADM||F^Face-to-Face||||||F|
   -->
-	<xsl:template match="//OBX" mode="reportmode">
-<!--		<xsl:text>&#xa;</xsl:text>
+  <xsl:template match="//OBX" mode="reportmode">
+    <!--		<xsl:text>&#xa;</xsl:text>
 		<xsl:value-of select="./OBX.3/CE.2"/>
 		<xsl:choose>
 			<xsl:when test="./OBX.2 = 'TX'">
@@ -598,19 +657,24 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<br />-->
-		
-			<dt><xsl:value-of select="./OBX.3/CE.2"/></dt>
-			<dd>
-				<xsl:choose>
-					<xsl:when test="./OBX.2 = 'TX'">
-						<xsl:value-of select="normalize-space(./OBX.5)"/><xsl:text> </xsl:text>    
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="./OBX.5/CE.1"/><xsl:text> - </xsl:text><xsl:value-of select="./OBX.5/CE.2"/>
-					</xsl:otherwise>
-				</xsl:choose>				
-			</dd>
-	</xsl:template>
+
+    <dt>
+      <xsl:value-of select="./OBX.3/CE.2"/>
+    </dt>
+    <dd>
+      <xsl:choose>
+        <xsl:when test="./OBX.2 = 'TX'">
+          <xsl:value-of select="normalize-space(./OBX.5)"/>
+          <xsl:text> </xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="./OBX.5/CE.1"/>
+          <xsl:text> - </xsl:text>
+          <xsl:value-of select="./OBX.5/CE.2"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </dd>
+  </xsl:template>
 
   <!---->
   <xsl:template name="FormatProvider">
