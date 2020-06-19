@@ -272,7 +272,7 @@
       <dl class="dl-horizontal">
         <xsl:if test="normalize-space(//PV2.3)">
           <dt>Admit Reason</dt>
-          <dd id="PV1.3">
+          <dd id="PV2.3">
             <xsl:value-of select="//PV2.3/*"/>
           </dd>
         </xsl:if>
@@ -294,15 +294,11 @@
         </xsl:if>
         <dt>Location</dt>
         <dd id="PV1.3">
-          <xsl:text>Point of Care: </xsl:text>
-          <xsl:value-of select="PV1.3/PL.1" />
-          <xsl:text> Room: </xsl:text><xsl:value-of select="PV1.3/PL.2" />
-          <xsl:text> Bed: </xsl:text>
-          <xsl:value-of select="PV1.3/PL.3" />
-          <xsl:text> Facility: </xsl:text>
-          <xsl:value-of select="PV1.3/PL.4/*" />
-          <xsl:text> Building: </xsl:text>
-          <xsl:value-of select="PV1.3/PL72" />
+          <xsl:for-each select="PV1.3/*">
+            <xsl:value-of select="."/>
+          </xsl:for-each>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="PV1.39"/>
         </dd>
         <xsl:if test="normalize-space(PV1.39)">
           <dt>Servicing Facility</dt>
@@ -483,14 +479,12 @@
         <dd id="IN1.15">
           <xsl:value-of select="IN1.15/*"/>
         </dd>
-        <xsl:if test="IN1.16/*[text()] != ''">
-          <dt>Name of Insured</dt>
-          <dd id="IN1.16">
-            <xsl:call-template name="FormatPersonName">
-              <xsl:with-param name="nameField" select="IN1.16/*" />
-            </xsl:call-template>
-          </dd>
-        </xsl:if>
+        <dt>Name of Insured</dt>
+        <dd id="IN1.16">
+          <xsl:call-template name="FormatPersonName">
+            <xsl:with-param name="nameField" select="IN1.16/*" />
+          </xsl:call-template>
+        </dd>
         <dt>Insured&apos;s Relationshipt to Patient</dt>
         <dd id="IN1.17">
           <xsl:value-of select="IN1.17/*"/>
@@ -821,14 +815,19 @@
   <xsl:template name="FormatPersonName">
     <xsl:param name="nameField"/>
     <!-- Surname -->
-    <xsl:value-of select="$nameField[name() = 'XPN.1']"/>
+    <xsl:value-of select="$nameField[name() = 'XCN.2']"/>
     <xsl:text>, </xsl:text>
-    <!-- Given Name -->
-    <xsl:value-of select="$nameField[name() = 'XPN.2']"/>
-    <!-- Middle -->
-    <xsl:if test="$nameField[name() = 'XPN.4'][normalize-space(.)]">
+    <!-- Prefix -->
+    <xsl:if test="$nameField/XCN.6[normalize-space(.)]">
+      <xsl:value-of select="$nameField[name() = 'XCN.6'][normalize-space(.)]"/>
       <xsl:text> </xsl:text>
-      <xsl:value-of select="$nameField[name() = 'XPN.3']"/>
+    </xsl:if>
+    <!-- Given Name -->
+    <xsl:value-of select="$nameField[name() = 'XCN.3']"/>
+    <!-- Middle -->
+    <xsl:if test="$nameField[name() = 'XCN.4'][normalize-space(.)]">
+      <xsl:text> </xsl:text>
+      <xsl:value-of select="$nameField[name() = 'XCN.4']"/>
     </xsl:if>
   </xsl:template>
   
@@ -837,21 +836,9 @@
     <xsl:param name="docField"/>
     <div class="row">
       <div class="col-md-12">
-        <!-- Surname -->
-        <xsl:value-of select="$docField[name() = 'XCN.2']"/>
-        <xsl:text>, </xsl:text>
-        <!-- Prefix -->
-        <xsl:if test="$docField/XCN.6[normalize-space(.)]">
-          <xsl:value-of select="$docField[name() = 'XCN.6'][normalize-space(.)]"/>
-          <xsl:text> </xsl:text>
-        </xsl:if>
-        <!-- Given Name -->
-        <xsl:value-of select="$docField[name() = 'XCN.3']"/>
-        <!-- Middle -->
-        <xsl:if test="$docField[name() = 'XCN.4'][normalize-space(.)]">
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$docField[name() = 'XCN.4']"/>
-        </xsl:if>
+        <xsl:call-template name="FormatPersonName">
+          <xsl:with-param name="nameField" select="$docField"/>
+        </xsl:call-template>
       </div>
 
       <div class="col-md-12">

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Xsl;
@@ -272,38 +273,24 @@ IN1|3|SELF PAY|1|SELF PAY|||||||||||5||1";
             xmlSettings.NewLineHandling = NewLineHandling.Replace;
             xmlSettings.ConformanceLevel = ConformanceLevel.Document;
 
-            //XslCompiledTransform transformer = new XslCompiledTransform();
-            //transformer.Load("D:\\DEV\\HL7Parser\\Resources\\HL7v2.xsl");
+            XslCompiledTransform transformer = new XslCompiledTransform();
+            transformer.Load(AppDomain.CurrentDomain.BaseDirectory + "\\Resources\\HL7XmlToHTML.xslt");
 
             StringBuilder xmlStringBuilder = new StringBuilder();
+            XmlReader xmlInput = XmlReader.Create(new StringReader(sXML));
+            XmlWriter xmlHolder = XmlWriter.Create(xmlStringBuilder, xmlSettings);
+            transformer.Transform(xmlInput, xmlHolder);
 
-            XslCompiledTransform transformer = new XslCompiledTransform();
+            //XslCompiledTransform transformer = new XslCompiledTransform();
+            //using (var textReader = XmlReader.Create(new StringReader(Properties.Resources.HL7XmlToHTML)))
+            //{
+            //    transformer.Load(textReader);
+            //    XmlReader xmlInput = XmlReader.Create(new StringReader(sXML));
+            //    XmlWriter xmlHolder = XmlWriter.Create(xmlStringBuilder, xmlSettings);
 
-            using (var textReader = XmlReader.Create(new StringReader(Properties.Resources.HL7XmlToHTML)))
-            {
-                transformer.Load(textReader);
-                XmlReader xmlInput = XmlReader.Create(new StringReader(sXML));
-                XmlWriter xmlHolder = XmlWriter.Create(xmlStringBuilder, xmlSettings);
+            //    transformer.Transform(xmlInput, xmlHolder);
+            //}
 
-                transformer.Transform(xmlInput, xmlHolder);
-            }
-
-        //    using (Stream stream = Assembly.GetExecutingAssembly()
-        //.GetManifestResourceStream("HL7Parser.Resources.HL7XmlToHTML.xslt"))
-        //    {
-        //        using (XmlReader reader = XmlReader.Create(stream))
-        //        {
-                    
-        //            var xmlReader = XmlReader.Create(Properties.Resources.HL7XmlToHTML);
-        //            transformer.Load(HL7Parser.Properties.Resources.HL7XmlToHTML);
-        //            //transformer.Load(reader);
-
-        //            XmlReader xmlInput = XmlReader.Create(new StringReader(sXML));
-        //            XmlWriter xmlHolder = XmlWriter.Create(xmlStringBuilder, xmlSettings);
-
-        //            transformer.Transform(xmlInput, xmlHolder);
-        //        }
-        //    }
             return xmlStringBuilder.ToString();
         }
     }

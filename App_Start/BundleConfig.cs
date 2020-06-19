@@ -13,8 +13,11 @@ namespace HL7Parser
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
                                     "~/Scripts/jquery-ui-{version}.js"));
 
+            //bundles.Add(new ScriptBundle("~/bundles/jsTree").Include(
+            //            "~/Scripts/jsTree3/jsTree.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jsTree").Include(
-                        "~/Scripts/jsTree3/jsTree.js"));
+                        "~/Scripts/jsTree.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -36,7 +39,7 @@ namespace HL7Parser
                       "~/Content/parsed.css"));
 
             bundles.Add(new StyleBundle("~/Content/treeviewcss").Include(
-                    "~/Content/jsTree/themes/default/style.css"));
+                    "~/Content/themes/default/style.css"));
         }
     }
 }

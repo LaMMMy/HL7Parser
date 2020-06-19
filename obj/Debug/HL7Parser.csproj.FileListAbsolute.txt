@@ -246,16 +246,6 @@ G:\DEV\GitHub\HL7Parser\obj\Debug\HL7Parser.csproj.CopyComplete
 C:\DEV\HL7Parser\obj\Debug\HL7Parser.csproj.CoreCompileInputs.cache
 C:\DEV\HL7Parser\obj\Debug\HL7Parser.dll
 C:\DEV\HL7Parser\obj\Debug\HL7Parser.pdb
-C:\DEV\HL7Parser\bin\Content\jsTree\themes\default-dark\32px.png
-C:\DEV\HL7Parser\bin\Content\jsTree\themes\default-dark\40px.png
-C:\DEV\HL7Parser\bin\Content\jsTree\themes\default-dark\style.css
-C:\DEV\HL7Parser\bin\Content\jsTree\themes\default-dark\style.min.css
-C:\DEV\HL7Parser\bin\Content\jsTree\themes\default-dark\throbber.gif
-C:\DEV\HL7Parser\bin\Content\jsTree\themes\default\32px.png
-C:\DEV\HL7Parser\bin\Content\jsTree\themes\default\40px.png
-C:\DEV\HL7Parser\bin\Content\jsTree\themes\default\style.css
-C:\DEV\HL7Parser\bin\Content\jsTree\themes\default\style.min.css
-C:\DEV\HL7Parser\bin\Content\jsTree\themes\default\throbber.gif
 C:\DEV\HL7Parser\bin\Resources\HL7v2.xsl
 C:\DEV\HL7Parser\bin\HL7Parser.dll.config
 C:\DEV\HL7Parser\bin\HL7Parser.dll
@@ -283,3 +273,4 @@ C:\DEV\HL7Parser\obj\Debug\HL7Parser.csproj.CopyComplete
 C:\DEV\HL7Parser\obj\Debug\HL7Parser.csprojAssemblyReference.cache
 C:\DEV\HL7Parser\obj\Debug\HL7Parser.Properties.Resources.resources
 C:\DEV\HL7Parser\obj\Debug\HL7Parser.csproj.GenerateResource.cache
+C:\DEV\HL7Parser\bin\Resources\HL7XmlToHTML.xslt
